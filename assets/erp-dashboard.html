@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<!-- dark is the default look, so it is set on <html> to avoid a light flash
+     before the script runs; the script only ever switches away from it -->
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tech First ERP</title>
+<style>
+  :root{
+    --sidebar-bg:#ffffff;
+    --sidebar-active:#1f7a8c;
+    --sidebar-text:#5b6570;
+    --border:#e9ecef;
+    --card-bg:#ffffff;
+    --page-bg:#f4f6f8;
+    --text-dark:#2b2f33;
+    --text-muted:#8b959e;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    font-family:"Segoe UI", Roboto, Arial, sans-serif;
+    /* this page is embedded in the ERP hero iframe, so it fills the frame
+       edge to edge instead of centring a fixed 1351x600 card in grey */
+    background:var(--page-bg);
+    color:var(--text-dark);
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+  }
+  .app{
+    display:flex;
+    width:100%;
+    height:100%;
+    background:var(--page-bg);
+    overflow:hidden;
+    position:relative;
+  }
+
+  /* SIDEBAR */
+  .sidebar{
+    width:250px;
+    background:var(--sidebar-bg);
+    border-right:1px solid var(--border);
+    display:flex;
+    flex-direction:column;
+    flex-shrink:0;
+    height:100%;
+    position:relative;
+  }
+  .logo-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 20px 14px 20px;
+    border-bottom:1px solid var(--border);
+  }
+  .logo{
+    display:flex;
+    flex-direction:column;
+    line-height:1;
+  }
+  .logo-text{
+    font-size:20px;
+    font-weight:700;
+    color:#1f2937;
+    display:flex;
+    align-items:center;
+    gap:2px;
+  }
+  .logo-text .o-icon{
+    color:#2f8fd6;
+    font-size:18px;
+  }
+  .logo-sub{
+    font-size:9px;
+    letter-spacing:1.5px;
+    color:#9aa4ad;
+    margin-top:2px;
+    font-weight:600;
+  }
+  .settings-icon{
+    width:28px;height:28px;border-radius:50%;
+    border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    color:#9aa4ad;font-size:14px;
+    flex-shrink:0;
+  }
+
+  .nav{
+    padding:8px 0;
+    overflow-y:auto;
+    flex:1;
+    scrollbar-gutter:stable;
+  }
+  .nav::-webkit-scrollbar{width:6px;}
+  .nav::-webkit-scrollbar-thumb{background:#d7dce0;border-radius:3px;}
+  .nav-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:11px 20px;
+    font-size:14px;
+    color:var(--sidebar-text);
+    cursor:pointer;
+    position:relative;
+    white-space:nowrap;
+  }
+  .nav-item .icon{
+    width:18px;
+    text-align:center;
+    font-size:15px;
+    flex-shrink:0;
+  }
+  .nav-item .chevron{
+    margin-left:auto;
+    font-size:11px;
+    color:#c2c9ce;
+  }
+  .nav-item.active{
+    background:var(--sidebar-active);
+    color:#fff;
+  }
+  .nav-item.active .icon{
+    color:#fff;
+  }
+  .nav-item:not(.active):hover{
+    background:#f5f7f8;
+  }
+
+  /* MAIN */
+  .main{
+    flex:1;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    height:100%;
+  }
+  .main-scroll{
+    flex:1;
+    overflow-y:auto;
+    scrollbar-gutter:stable;
+  }
+  .topbar{
+    background:#fff;
+    border-bottom:1px solid var(--border);
+    height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:14px;
+    padding:0 28px;
+  }
+  .theme-toggle{
+    width:32px;height:32px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    color:#5b6570;
+    font-size:16px;
+    position:relative;
+  }
+
+  /* "switch mode" suggestion, anchored beside the moon icon.
+     Lives inside .theme-toggle (which is position:relative) so the arrow always
+     points at the icon, whatever the topbar's flex layout adds to its left. */
+  .theme-hint{
+    position:absolute;
+    right:calc(100% + 7px);
+    top:50%;
+    z-index:5;
+    padding:7px 11px;
+    border-radius:6px;
+    background:#1f2937;
+    color:#fff;
+    font-size:12px;
+    font-weight:600;
+    line-height:1.3;
+    white-space:nowrap;
+    pointer-events:none;
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-50%) scale(.94);
+    transition:opacity .3s ease, transform .3s ease, visibility .3s ease;
+  }
+  .theme-hint::after{
+    content:"";
+    position:absolute;
+    right:-5px;
+    top:50%;
+    margin-top:-5px;
+    width:0;height:0;
+    border-left:5px solid #1f2937;
+    border-top:5px solid transparent;
+    border-bottom:5px solid transparent;
+  }
+  .theme-hint.is-visible{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(-50%) scale(1);
+  }
+  .theme-toggle__icon{
+    display:inline-block;
+    line-height:1;
+  }
+
+  /* On a first open the glyph itself jumps, to pull the eye towards the switch.
+     The animation is on the glyph and not on .theme-toggle, so the hint bubble
+     beside it stays still. The delay lines it up with the bubble at 1.4s, and it
+     repeats until the visitor actually uses the switch. */
+  @keyframes tp-theme-nudge {
+    0%, 60%, 100% { transform: translateY(0); }
+    20% { transform: translateY(-6px); }
+    40% { transform: translateY(0); }
+  }
+  .theme-toggle__icon.is-nudging {
+    animation: tp-theme-nudge .8s ease-in-out infinite;
+    animation-delay: 1.4s;
+  }
+  /* A target that keeps moving is hard to click, so hold it still while the
+     pointer or keyboard focus is on the switch. */
+  @media (hover:hover) {
+    .theme-toggle:hover .theme-toggle__icon.is-nudging,
+    .theme-toggle:focus-visible .theme-toggle__icon.is-nudging {
+      animation-play-state: paused;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .theme-toggle__icon.is-nudging { animation: none; }
+  }
+
+  /* Too narrow to fit a bubble beside the icon without clipping it, so stay
+     quiet rather than render half a tooltip. */
+  @media (max-width:700px){
+    .theme-hint{display:none;}
+  }
+  .top-select{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid #2f8fd6;
+    color:#2f8fd6;
+    border-radius:6px;
+    padding:7px 12px;
+    font-size:13px;
+    font-weight:600;
+  }
+  .top-select .caret{
+    border-left:1px solid #cfe6fa;
+    padding-left:8px;
+    font-size:10px;
+  }
+  .user-block{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .user-name-role{
+    text-align:right;
+    line-height:1.25;
+  }
+  .user-name{
+    font-size:13px;
+    font-weight:700;
+    color:#2b2f33;
+    letter-spacing:.3px;
+  }
+  .user-role{
+    font-size:11px;
+    color:#9aa4ad;
+  }
+  .avatar{
+    width:38px;height:38px;
+    border-radius:50%;
+    background:#e3e6e9;
+    position:relative;
+    display:flex;align-items:center;justify-content:center;
+    color:#b7bec4;
+    font-size:20px;
+  }
+  .avatar::after{
+    content:"";
+    position:absolute;
+    bottom:1px;right:1px;
+    width:9px;height:9px;
+    border-radius:50%;
+    background:#3fc463;
+    border:2px solid #fff;
+  }
+
+  .content{
+    padding:22px 26px 30px 26px;
+  }
+
+  /* STAT CARDS ROW */
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-bottom:16px;
+  }
+  .stat-card{
+    background:var(--card-bg);
+    border-radius:8px;
+    border:1px solid var(--border);
+    padding:18px 18px 16px 18px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    min-height:96px;
+  }
+  .stat-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+  }
+  .stat-number{
+    font-size:28px;
+    font-weight:700;
+    color:#2b2f33;
+  }
+  .stat-icon{
+    width:38px;height:38px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:17px;
+    flex-shrink:0;
+  }
+  .stat-icon.blue{background:#dbeeff;color:#2f8fd6;}
+  .stat-icon.green{background:#dff3e3;color:#3fb763;}
+  .stat-icon.teal{background:#d9f0f4;color:#1f7a8c;}
+  .stat-icon.orange{background:#ffe6d8;color:#f2884b;}
+  .stat-label{
+    font-size:13px;
+    color:#8b959e;
+  }
+
+  /* CHART PANEL */
+  .chart-panel{
+    background:var(--card-bg);
+    border-radius:8px;
+    border:1px solid var(--border);
+    margin-bottom:16px;
+    overflow:hidden;
+  }
+  .chart-panel-title{
+    font-size:16px;
+    font-weight:700;
+    color:#2b2f33;
+    padding:16px 20px;
+    border-bottom:1px solid var(--border);
+  }
+  .chart-inner{
+    padding:20px 24px 24px 24px;
+  }
+  .chart-sub-title{
+    text-align:center;
+    font-size:13px;
+    font-weight:700;
+    color:#2b2f33;
+    margin-bottom:16px;
+  }
+  .chart-body{
+    display:flex;
+  }
+  .chart-yaxis{
+    display:flex;
+    flex-direction:column-reverse;
+    justify-content:space-between;
+    align-items:flex-end;
+    padding-right:10px;
+    height:230px;
+    font-size:12px;
+    color:#8b959e;
+  }
+  .chart-plot{
+    position:relative;
+    flex:1;
+    height:230px;
+    border-left:1px solid #edf0f2;
+  }
+  .grid-line{
+    position:absolute;
+    left:0;right:0;
+    border-top:1px solid #edf0f2;
+  }
+  .bars-wrap{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-evenly;
+    padding:0 60px;
+  }
+  .bar-col{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-end;
+    width:120px;
+    height:100%;
+  }
+  .bar{
+    width:82px;
+    border-radius:2px 2px 0 0;
+    background:#1f5f66;
+    flex-shrink:0;
+  }
+  .bar-caption{
+    margin-top:10px;
+    font-size:13px;
+    color:#495057;
+    white-space:nowrap;
+  }
+
+  /* LOW STOCK ALERT PANEL */
+  .alert-panel{
+    border:1.5px solid #e74c4c;
+    border-radius:8px;
+    background:#fff;
+    overflow:hidden;
+  }
+  .alert-title{
+    color:#e74c4c;
+    font-weight:700;
+    font-size:15px;
+    padding:12px 20px;
+    border-bottom:1px solid #f3d3d3;
+  }
+  .alert-panel table{
+    width:100%;
+    border-collapse:collapse;
+  }
+  .alert-panel thead th{
+    text-align:left;
+    font-size:11px;
+    letter-spacing:.4px;
+    color:#9aa4ad;
+    font-weight:700;
+    text-transform:uppercase;
+    padding:10px 20px;
+    background:#f6f7f9;
+    border-bottom:1px solid var(--border);
+  }
+  .alert-panel thead th:last-child{
+    text-align:right;
+  }
+  .alert-panel tbody td{
+    padding:12px 20px;
+    font-size:13.5px;
+    color:#495057;
+  }
+  .alert-panel tbody td:last-child{
+    text-align:right;
+    color:#e74c4c;
+    font-weight:600;
+  }
+
+  .scroll-top-btn{
+    position:absolute;
+    right:28px;
+    bottom:24px;
+    width:42px;height:42px;
+    border-radius:6px;
+    background:#2f8fd6;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    border:none;
+    cursor:pointer;
+    box-shadow:0 4px 10px rgba(47,143,214,.35);
+  }
+  .scroll-top-btn:hover{
+    background:#2679b8;
+  }
+
+  ::-webkit-scrollbar{width:8px;height:8px;}
+  ::-webkit-scrollbar-thumb{background:#d7dce0;border-radius:4px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+
+  @media (max-width:1200px){
+    .stat-row{grid-template-columns:repeat(2,1fr);}
+  }
+
+  /* ==========================================================================
+     DARK MODE
+     Toggled by the site header switch (or the moon icon in this topbar), which
+     sets data-theme on <html>. Scoped with the attribute selector so the light
+     palette above is left completely untouched. These rules exist because the
+     original palette hardcodes greys in component rules rather than tokens.
+     ========================================================================== */
+  [data-theme="dark"]{
+    --page-bg:#13171b;
+    --card-bg:#1b2126;
+    --sidebar-bg:#161b20;
+    --border:#2b333a;
+    --text-dark:#e8edf1;
+    --text-muted:#97a2ac;
+    --sidebar-text:#a9b4be;
+    --sidebar-active:#1f7a8c;
+  }
+  [data-theme="dark"] .logo-text{color:#e8edf1;}
+  [data-theme="dark"] .logo-sub{color:#97a2ac;}
+  [data-theme="dark"] .settings-icon{color:#97a2ac;border-color:#2b333a;}
+  [data-theme="dark"] .nav-item .chevron{color:#8a949e;}
+  [data-theme="dark"] .nav-item:not(.active):hover{background:#222a31;}
+  [data-theme="dark"] .nav::-webkit-scrollbar-thumb{background:#39424b;}
+  [data-theme="dark"] .theme-toggle{color:#a9b4be;cursor:pointer;}
+  [data-theme="dark"] .topbar{background:#1b2126;}
+  [data-theme="dark"] .top-select .caret{border-left-color:#2a4b64;}
+  [data-theme="dark"] .user-name{color:#e8edf1;}
+  [data-theme="dark"] .user-role{color:#97a2ac;}
+  [data-theme="dark"] .avatar{background:#2b333a;color:#a8b2bb;}
+  [data-theme="dark"] .avatar::after{border-color:#1b2126;}
+  [data-theme="dark"] .stat-number{color:#e8edf1;}
+  [data-theme="dark"] .stat-label{color:#97a2ac;}
+  [data-theme="dark"] .stat-icon.blue{background:#12293d;color:#59a8e6;}
+  [data-theme="dark"] .stat-icon.green{background:#123320;color:#5fd07f;}
+  [data-theme="dark"] .stat-icon.teal{background:#0f3238;color:#4ecfd9;}
+  [data-theme="dark"] .stat-icon.orange{background:#38230f;color:#f5a371;}
+  [data-theme="dark"] .chart-panel-title{color:#e8edf1;}
+  [data-theme="dark"] .chart-sub-title{color:#e8edf1;}
+  [data-theme="dark"] .chart-yaxis{color:#97a2ac;}
+  [data-theme="dark"] .chart-plot{border-left-color:#2b333a;}
+  [data-theme="dark"] .grid-line{border-top-color:#2b333a;}
+  [data-theme="dark"] .bar{background:#35a3ad;}
+  [data-theme="dark"] .bar-caption{color:#b6c0c8;}
+  [data-theme="dark"] .alert-panel{background:#1b2126;}
+  /* the stock-red only reaches 4.28:1 on the dark panel, so lift it to pass AA */
+  [data-theme="dark"] .alert-title{color:#ff7a7a;border-bottom-color:#4a2b2b;}
+  [data-theme="dark"] .alert-panel tbody td:last-child{color:#ff7a7a;}
+  [data-theme="dark"] .alert-panel thead th{color:#97a2ac;background:#212830;}
+  [data-theme="dark"] .alert-panel tbody td{color:#b6c0c8;}
+  [data-theme="dark"] .scroll-top-btn{box-shadow:0 4px 10px rgba(47,143,214,.25);}
+  [data-theme="dark"] ::-webkit-scrollbar-thumb{background:#39424b;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo-row">
+      <div class="logo">
+        <div class="logo-text"><span style="color:var(--text-dark);">tech</span><span class="o-icon">◎</span><span style="color:var(--text-dark);">first</span></div>
+        <div class="logo-sub">SOLAR CRM</div>
+      </div>
+      <div class="settings-icon">⚙</div>
+    </div>
+    <div class="nav">
+      <div class="nav-item active"><span class="icon">⌂</span>Dashboard</div>
+      <div class="nav-item"><span class="icon">⚛</span>Role</div>
+      <div class="nav-item"><span class="icon">▦</span>Master<span class="chevron">›</span></div>
+      <div class="nav-item"><span class="icon">🔖</span>Warehouse Manage<span class="chevron">›</span></div>
+      <div class="nav-item"><span class="icon">🛒</span>Purchase Order</div>
+      <div class="nav-item"><span class="icon">📦</span>Goods Receipt</div>
+      <div class="nav-item"><span class="icon">🚚</span>Goods Issue</div>
+      <div class="nav-item"><span class="icon">🚚</span>Goods Return</div>
+      <div class="nav-item"><span class="icon">📦</span>Project Wise Stock</div>
+      <div class="nav-item"><span class="icon">📋</span>Project Adjust Stock</div>
+      <div class="nav-item"><span class="icon">☰</span>Reports</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="theme-toggle"><span class="theme-toggle__icon" id="themeIcon">☀️</span><div class="theme-hint" id="themeHint" role="status">Switch to light mode</div></div>
+      <div class="top-select">ERP <span class="caret">▾</span></div>
+      <div class="top-select">2026-27 <span class="caret">▾</span></div>
+      <div class="user-block">
+        <div class="user-name-role">
+          <div class="user-name">TECHFIRST</div>
+          <div class="user-role">Owner</div>
+        </div>
+        <div class="avatar">👤</div>
+      </div>
+    </div>
+
+    <div class="main-scroll" id="mainScroll">
+    <div class="content">
+
+      <!-- Stat cards -->
+      <div class="stat-row">
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-number">22</div>
+            <div class="stat-icon blue">🛍</div>
+          </div>
+          <div class="stat-label">Purchase Orders</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-number">370</div>
+            <div class="stat-icon green">📥</div>
+          </div>
+          <div class="stat-label">Goods Receipt</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-number">3</div>
+            <div class="stat-icon teal">📤</div>
+          </div>
+          <div class="stat-label">Goods Issue</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-number">99</div>
+            <div class="stat-icon orange">📦</div>
+          </div>
+          <div class="stat-label">Total Stock Items</div>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="chart-panel">
+        <div class="chart-panel-title">Monthly Activity (Last 30 Days)</div>
+        <div class="chart-inner">
+          <div class="chart-sub-title">Last 30 Days</div>
+          <div class="chart-body">
+            <div class="chart-yaxis">
+              <span>0.0</span><span>0.7</span><span>1.3</span><span>2.0</span>
+            </div>
+            <div class="chart-plot">
+              <div class="grid-line" style="bottom:0%;"></div>
+              <div class="grid-line" style="bottom:35%;"></div>
+              <div class="grid-line" style="bottom:65%;"></div>
+              <div class="grid-line" style="bottom:100%;"></div>
+              <div class="bars-wrap">
+                <div class="bar-col">
+                  <div class="bar" style="height:100%;"></div>
+                  <div class="bar-caption">24 Sep</div>
+                </div>
+                <div class="bar-col">
+                  <div class="bar" style="height:50%;"></div>
+                  <div class="bar-caption">25 Sep</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Low Stock Alerts -->
+      <div class="alert-panel">
+        <div class="alert-title">Low Stock Alerts (Below MOQ)</div>
+        <table>
+          <thead>
+            <tr><th>Warehouse</th><th>Item</th><th>Quantity</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ravki</td>
+              <td>595W Solar Module (Rayzon - TOPCON G2G | Non DCR)</td>
+              <td>21 Nos</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    </div>
+
+    <button class="scroll-top-btn" id="scrollTopBtn" title="Scroll to top">↑</button>
+  </div>
+</div>
+
+<script>
+  const mainScroll = document.getElementById('mainScroll');
+  const btn = document.getElementById('scrollTopBtn');
+  function toggleBtn(){
+    btn.style.display = mainScroll.scrollTop > 120 ? 'flex' : 'none';
+  }
+  mainScroll.addEventListener('scroll', toggleBtn);
+  toggleBtn();
+  btn.addEventListener('click', () => {
+    mainScroll.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  // THEME - the moon icon in this topbar is the only control. The choice is
+  // remembered under an ERP-specific key, so it does not leak onto the CRM page.
+  const THEME_KEY = 'tf-dash-theme-erp';
+  const root = document.documentElement;
+  const themeToggle = document.querySelector('.theme-toggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const themeHint = document.getElementById('themeHint');
+  let hintTimer = null;
+
+  // Dark is the default. A stored 'light' is the only thing that overrides it.
+  function readStoredTheme() {
+    try { return localStorage.getItem(THEME_KEY) === 'light' ? 'light' : 'dark'; }
+    catch (e) { return 'dark'; }
+  }
+  function hasStoredTheme() {
+    try { return localStorage.getItem(THEME_KEY) !== null; }
+    catch (e) { return false; }
+  }
+  function applyTheme(mode) {
+    root.setAttribute('data-theme', mode);
+    const next = mode === 'dark' ? 'light' : 'dark';
+
+    if (themeToggle) {
+      themeToggle.setAttribute('aria-label', 'Switch to ' + next + ' mode');
+      themeToggle.setAttribute('title', 'Switch to ' + next + ' mode');
+    }
+    if (themeIcon) {
+      themeIcon.textContent = mode === 'dark' ? '☀️' : '🌙';
+    }
+    if (themeHint) {
+      themeHint.textContent = 'Switch to ' + next + ' mode';
+    }
+  }
+  function setTheme(mode) {
+    applyTheme(mode);
+    try { localStorage.setItem(THEME_KEY, mode); } catch (e) {}
+    hideHint();
+    stopNudge();
+  }
+  function toggleTheme() {
+    setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  }
+
+  // Point out the switch on a first visit only. No stored preference means the
+  // visitor has never used it, and setting one hides the hint for good.
+  function hideHint() {
+    if (hintTimer) {
+      clearTimeout(hintTimer);
+      hintTimer = null;
+    }
+    if (themeHint) {
+      themeHint.classList.remove('is-visible');
+    }
+  }
+  // The bubble sits 7px to the left of the icon, so it only appears when the
+  // topbar has room for it. A fixed breakpoint is not enough: the CRM and ERP
+  // topbars hold different amounts of content, so the limit moves with it.
+  function hintFits() {
+    if (!themeHint || getComputedStyle(themeHint).display === 'none') {
+      return false;
+    }
+    const main = document.querySelector('.main');
+    if (!main) {
+      return false;
+    }
+    const left = themeToggle.getBoundingClientRect().left - 7 - themeHint.offsetWidth;
+    return left >= main.getBoundingClientRect().left + 4;
+  }
+  function showHint() {
+    if (themeHint && hintFits() && !themeHint.classList.contains('is-visible')) {
+      themeHint.classList.add('is-visible');
+      hintTimer = setTimeout(hideHint, 7000);
+    }
+  }
+  function syncHint() {
+    if (themeHint && themeHint.classList.contains('is-visible') && !hintFits()) {
+      hideHint();
+    }
+  }
+  // The jump is the louder half of the suggestion: the bubble can be missed,
+  // a moving glyph cannot. So it repeats until the visitor actually uses the
+  // switch, and setTheme() drops the class to stop it for good. The 1.4s pause
+  // lives in the CSS animation-delay, so the two land together.
+  function nudgeIcon() {
+    if (!themeIcon) {
+      return;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+    themeIcon.classList.add('is-nudging');
+  }
+  function stopNudge() {
+    if (themeIcon) {
+      themeIcon.classList.remove('is-nudging');
+    }
+  }
+
+  if (themeToggle) {
+    themeToggle.style.cursor = 'pointer';
+    themeToggle.setAttribute('role', 'button');
+    themeToggle.setAttribute('tabindex', '0');
+    themeToggle.addEventListener('click', toggleTheme);
+    themeToggle.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleTheme();
+      }
+    });
+  }
+
+  applyTheme(readStoredTheme());
+
+  if (!hasStoredTheme()) {
+    setTimeout(showHint, 1400);
+    nudgeIcon();
+  }
+
+  // stop showing a bubble that no longer fits after a resize
+  window.addEventListener('resize', syncHint);
+</script>
+</body>
+</html>

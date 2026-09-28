@@ -253,6 +253,12 @@ a:focus,
     outline: none;
 }
 
+a:focus-visible,
+.button:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+}
+
 a:focus,
 a:hover {
     color: inherit;
@@ -710,7 +716,7 @@ input[type=color] {
     font-family: var(--tp-ff-urban);
     height: 48px;
     line-height: 48px;
-    padding: 0 35px;
+    padding: 0 22px;
     font-weight: 700;
     font-size: 16px;
     text-align: center;
@@ -2338,13 +2344,14 @@ input[type=color] {
     color: var(--tp-common-white);
     text-align: center;
     cursor: pointer;
-    background: var(--tp-common-black);
-    transition: 1s ease;
+    background: var(--tp-common-blue);
+    transition: bottom 1s ease;
     border: none;
 }
 
 .scroll-top.open {
     bottom: 80px;
+    z-index: 1000;
 }
 
 /* WhatsApp Floating Button */
@@ -2664,6 +2671,10 @@ only screen and (min-width: 768px) and (max-width: 991px) {
 .tpoffcanvas__info .offcanva-title {
     color: var(--tp-common-white);
     padding-bottom: 5px;
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.1;
 }
 
 .tpoffcanvas__info a {
@@ -4528,6 +4539,162 @@ only screen and (min-width: 768px) and (max-width: 991px) {
     right: 0;
 }
 
+/* Glassmorphism capsule navbar.
+   The bar stays in the normal document flow (position: relative) so it occupies its
+   real place at the top of the page; it only becomes fixed once the scroll handler
+   adds .header-sticky. The <header class="tp-header-height"> wrapper keeps the bar's
+   height reserved, so the swap to fixed does not shift the page. */
+#header-sticky.header-bottom__area {
+    position: relative;
+    z-index: 999;
+    padding: 8px 22px;
+    pointer-events: none;
+    /* the bar is shorter here than when pinned, so ease between the two states
+       instead of snapping as .header-sticky comes and goes */
+    transition: padding 0.3s ease;
+}
+
+/* At the top of the page the bar carries no background at all - just the logo, links
+   and CTA floating over the hero. The real navbar background is switched on by
+   .header-sticky once the bar pins after scrolling.
+
+   The top-of-page bar is deliberately shorter than the pinned one: less dead space
+   above the hero. Only the padding differs, so the logo and the links keep one
+   size in both states and nothing resizes when the bar pins. The .header-sticky
+   padding is re-stated right below, because these two states share one element and
+   would otherwise inherit the tighter top-of-page value. */
+#header-sticky.header-bottom__area>.container {
+    position: relative;
+    pointer-events: auto;
+    max-width: 1320px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+}
+
+/* Same selector weight as the rule above, so it wins once .header-sticky joins the
+   class list and gives the pinned bar back its roomier padding. */
+#header-sticky.header-sticky>.container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* Compact top-level links inside the capsule: the theme sets padding 40px 0 / line-height 14px,
+   which makes a 120px tall bar and cramps 16px text. */
+#header-sticky .header-bottom__main-menu-3 nav>ul>li {
+    margin: 0px;
+}
+
+#header-sticky .header-bottom__main-menu-3 nav>ul>li>a {
+    margin: 10px;
+    padding: 9px 10px;
+    line-height: 24px;
+    white-space: nowrap;
+    border-radius: 999px;
+    transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media only screen and (min-width: 1200px) {
+    #header-sticky .header-bottom__main-menu-3 nav>ul>li>a {
+        padding: 4px 14px;
+    }
+}
+
+/* Nav on the right side: keep the theme's column widths (so the row can never wrap)
+   and right-align the link row so it groups with the CTA button. */
+@media only screen and (min-width: 992px) {
+
+    #header-sticky .header-bottom__main-menu-3 nav>ul {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        margin-left: 0px;
+    }
+}
+
+#header-sticky .header-bottom__main-menu-3 nav>ul>li>a:hover,
+#header-sticky .header-bottom__main-menu-3 nav>ul>li>a:focus-visible {
+    background-color: rgba(0, 140, 210, 0.12);
+}
+
+#header-sticky .header-bottom__main-menu-3 nav>ul>li>a:focus-visible {
+    outline: 2px solid var(--tp-common-blue);
+    outline-offset: 2px;
+}
+
+#header-sticky .header-bottom__main-menu-3 nav>ul>li>a[aria-current="page"] {
+    background-color: var(--tp-common-blue);
+    color: var(--tp-common-white);
+    box-shadow: 0px 6px 16px rgba(0, 140, 210, 0.3);
+}
+
+#header-sticky.header-sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 22px;
+    background-color: transparent;
+    background-image: none;
+    box-shadow: none;
+    animation: none;
+}
+
+/* Reserve the navbar's band at the top of the page so nothing hides underneath it.
+   GSAP ScrollSmoother pins #smooth-wrapper to the viewport, so the space cannot come
+   from ordinary document flow - it has to be reserved on the scrolled content itself.
+   --tp-header-space is written by main.js from the measured bar height, which keeps
+   the band correct when the bar reflows (mobile bar, wrapped nav, resize). */
+#smooth-content {
+    padding-top: var(--tp-header-space, 0px);
+}
+
+/* Once the bar is pinned it becomes the real navbar: solid surface, border and shadow. */
+#header-sticky.header-sticky>.container {
+    background-color: #FFFFFF;
+    background-image: none;
+    border-color: rgba(1, 16, 61, 0.08);
+    box-shadow: 0px 12px 34px rgba(1, 16, 61, 0.14);
+}
+
+@media only screen and (max-width: 991px) {
+    #header-sticky.header-bottom__area {
+        padding: 8px 14px;
+    }
+
+    #header-sticky.header-bottom__area>.container {
+        border-radius: 24px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
+
+    /* keep the pinned mobile bar exactly as tall as it was */
+    #header-sticky.header-sticky {
+        padding: 12px 14px;
+    }
+
+    #header-sticky.header-sticky>.container {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    #header-sticky.header-bottom__area>.container,
+    #header-sticky .header-bottom__main-menu-3 nav>ul>li>a {
+        transition: none;
+    }
+}
+
 .header-bottom__plr-4 {
     padding: 0px 315px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -5850,6 +6017,32 @@ only screen and (min-width: 1200px) and (max-width: 1399px) {
 .tp-hero-btn-3 a {
     margin: 0px 7px;
     margin-bottom: 20px;
+}
+
+.tp-hero-3-wrapper {
+    position: relative;
+    margin-top: 20px;
+}
+
+.tp-hero-3-full-width {
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 40px;
+}
+
+.tp-hero-3-main-thumb {
+    position: relative;
+    z-index: 5;
+    overflow: hidden;
+    border-radius: 0px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 30px 60px rgba(1, 16, 61, 0.12);
+}
+
+.tp-hero-3-main-thumb img {
+    display: block;
+    width: 100%;
+    height: auto;
 }
 
 .tp-hero-3-shape-1 {
@@ -14321,7 +14514,7 @@ only screen and (min-width: 768px) and (max-width: 991px),
     }
 }
 
-.tp-counter-item h4 {
+.tp-counter-item .tp-counter-value {
     font-weight: 400;
     font-size: 40px;
     line-height: 50px;
@@ -14330,7 +14523,7 @@ only screen and (min-width: 768px) and (max-width: 991px),
     font-family: var(--tp-ff-dm);
 }
 
-.tp-counter-item h4 span {
+.tp-counter-item .tp-counter-value span {
     font-family: var(--tp-ff-dm);
     font-style: italic;
     font-weight: 400;
@@ -14340,12 +14533,12 @@ only screen and (min-width: 768px) and (max-width: 991px),
 }
 
 @media (max-width: 767px) {
-    .tp-counter-item h4 span {
+    .tp-counter-item .tp-counter-value span {
         font-size: 45px;
     }
 }
 
-.tp-counter-item h4 em {
+.tp-counter-item .tp-counter-value em {
     font-weight: 400;
     font-size: 60px;
     line-height: 50px;
@@ -14435,6 +14628,14 @@ only screen and (min-width: 768px) and (max-width: 991px),
     .tp-counter-shape-4 {
         top: -12%;
         right: 0.5%;
+    }
+}
+
+@media (max-width: 767px) {
+    .tp-counter-shape-2,
+    .tp-counter-shape-3,
+    .tp-counter-shape-4 {
+        display: none;
     }
 }
 
@@ -14896,6 +15097,15 @@ only screen and (min-width: 768px) and (max-width: 991px),
     line-height: 26px;
     color: var(--tp-common-blue);
     margin-bottom: 0;
+}
+
+.tp-testimonial-3-section-box .tp-integration-subtitle {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
 .tp-integration-slider-active-2 .slick-slide {
@@ -15407,10 +15617,14 @@ only screen and (min-width: 768px) and (max-width: 991px),
 .tp-rated-bg {
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: var(--tp-common-black);
+    background-image: linear-gradient(180deg, #000229 0%, #1117A0 100%);
     margin-left: 60px;
     margin-right: 60px;
     border-radius: 60px;
-    height: 980px;
+    height: auto;
+    min-height: 980px;
+    padding-bottom: 60px;
     overflow: hidden;
 }
 
@@ -15419,6 +15633,1450 @@ only screen and (min-width: 768px) and (max-width: 991px),
     .tp-rated-bg {
         margin-left: 0px;
         margin-right: 0px;
+    }
+}
+
+/* ==========================================================================
+   ERP FEATURES PAGE + MOBILE APP PAGE
+   Self-contained, scoped to #erp-page / #app-page so nothing leaks into the
+   other pages. Both pages share the primitives below (section rhythm, eyebrow,
+   heading, lead, buttons); the ERP-only and app-only components that follow are
+   namespaced separately. Both heroes keep a light top band because the
+   transparent navbar sits on them with dark navy links.
+   ========================================================================== */
+
+#erp-page,
+#app-page {
+    --erp-navy: #000229;
+    --erp-blue: #008cd2;
+    --erp-indigo: #1117A0;
+    --erp-body: #5F6368;
+    --erp-mute: #9A9DA7;
+    --erp-line: #EBECF0;
+    --erp-soft: #F7F9FB;
+    --erp-radius: 20px;
+}
+
+#erp-page .erp-section,
+#app-page .app-section {
+    padding: 110px 0px;
+    position: relative;
+}
+
+/* ---------- shared section heading ---------- */
+#erp-page .erp-eyebrow,
+#app-page .app-eyebrow {
+    display: inline-block;
+    margin-bottom: 18px;
+    padding: 7px 16px;
+    border: 1px solid var(--erp-line);
+    border-radius: 999px;
+    background: var(--tp-common-white);
+    color: var(--erp-blue);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+#erp-page .erp-heading,
+#app-page .app-heading {
+    margin-bottom: 18px;
+    color: var(--erp-navy);
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+}
+
+#erp-page .erp-heading span,
+#app-page .app-heading span {
+    color: var(--erp-blue);
+}
+
+#erp-page .erp-lead,
+#app-page .app-lead {
+    max-width: 720px;
+    margin-bottom: 0px;
+    color: var(--erp-body);
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+#erp-page .erp-section-head,
+#app-page .app-section-head {
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+#erp-page .erp-section-head .erp-lead,
+#app-page .app-section-head .app-lead {
+    margin: 0px auto;
+}
+
+/* ---------- hero ---------- */
+#erp-page .erp-hero {
+    padding: 0px 0px 40px;
+    background: linear-gradient(180deg, #FFFFFF 0%, #F7F9FB 100%);
+    overflow: hidden;
+}
+
+#erp-page .erp-hero__copy {
+    position: relative;
+    z-index: 5;
+    padding: 56px 0px 20px;
+    text-align: center;
+}
+
+#erp-page .erp-hero__copy .erp-lead {
+    max-width: 760px;
+    margin: 0px auto;
+}
+
+#erp-page .erp-hero__title {
+    margin-bottom: 22px;
+    color: var(--erp-navy);
+    font-size: 60px;
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+}
+
+#erp-page .erp-hero__title span {
+    color: var(--erp-blue);
+}
+
+#erp-page .erp-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+    margin-top: 34px;
+}
+
+#erp-page .erp-btn,
+#app-page .app-btn {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 30px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+    overflow: hidden;
+    transition: color 0.35s ease, border-color 0.35s ease, box-shadow 0.25s ease;
+}
+
+/* Button hover follows the theme's .tp-btn-hover behaviour: a black circle wipes
+   in from the centre with the label sitting on top, instead of the button moving. */
+#erp-page .erp-btn::before,
+#app-page .app-btn::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    background-color: var(--tp-common-black);
+    content: "";
+    transform: translate(-50%, -50%);
+    transition: width 0.7s ease, height 0.7s ease;
+}
+
+#erp-page .erp-btn:hover::before,
+#app-page .app-btn:hover::before {
+    width: 400px;
+    height: 400px;
+}
+
+#erp-page .erp-btn>*,
+#app-page .app-btn>* {
+    position: relative;
+    z-index: 2;
+}
+
+#erp-page .erp-btn--primary,
+#app-page .app-btn--primary {
+    background: var(--erp-blue);
+    color: var(--tp-common-white);
+    box-shadow: 0px 14px 30px rgba(0, 140, 210, 0.28);
+}
+
+#erp-page .erp-btn--primary:hover,
+#app-page .app-btn--primary:hover {
+    color: var(--tp-common-white);
+    box-shadow: 0px 16px 34px rgba(0, 2, 41, 0.32);
+}
+
+#erp-page .erp-btn--ghost,
+#app-page .app-btn--ghost {
+    border-color: var(--erp-line);
+    background: var(--tp-common-white);
+    color: var(--erp-navy);
+}
+
+#erp-page .erp-btn--ghost:hover,
+#app-page .app-btn--ghost:hover {
+    border-color: var(--tp-common-black);
+    color: var(--tp-common-white);
+}
+
+#erp-page .erp-hero__points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 34px;
+    justify-content: center;
+    margin: 40px 0px 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+#erp-page .erp-hero__points li {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--erp-navy);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+#erp-page .erp-hero__points i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(0, 140, 210, 0.1);
+    color: var(--erp-blue);
+    font-size: 11px;
+}
+
+/* ---------- operational spine ---------- */
+#erp-page .erp-flow {
+    background: var(--erp-soft);
+}
+
+#erp-page .erp-flow__track {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 26px;
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+#erp-page .erp-step {
+    position: relative;
+    padding: 30px 26px;
+    border: 1px solid var(--erp-line);
+    border-radius: var(--erp-radius);
+    background: var(--tp-common-white);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+#erp-page .erp-step:hover {
+    border-color: rgba(0, 140, 210, 0.35);
+    transform: translateY(-5px);
+    box-shadow: 0px 22px 44px rgba(1, 16, 61, 0.09);
+}
+
+#erp-page .erp-step__num {
+    position: absolute;
+    top: -16px;
+    left: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--erp-navy);
+    color: var(--tp-common-white);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+#erp-page .erp-step__title {
+    margin: 14px 0px 8px;
+    color: var(--erp-navy);
+    font-size: 18px;
+    font-weight: 800;
+}
+
+#erp-page .erp-step__text {
+    margin: 0px;
+    color: var(--erp-body);
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+#erp-page .erp-step__tag {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: rgba(0, 140, 210, 0.08);
+    color: var(--erp-indigo);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* ---------- module grid ---------- */
+#erp-page .erp-modules {
+    background: var(--tp-common-white);
+}
+
+#erp-page .erp-card {
+    position: relative;
+    height: 100%;
+    padding: 38px 32px;
+    border: 1px solid var(--erp-line);
+    border-radius: var(--erp-radius);
+    background: var(--tp-common-white);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+#erp-page .erp-card::after {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 4px;
+    border-radius: var(--erp-radius) var(--erp-radius) 0px 0px;
+    background: var(--erp-accent, var(--erp-blue));
+    content: "";
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#erp-page .erp-card:hover {
+    border-color: transparent;
+    transform: translateY(-6px);
+    box-shadow: 0px 26px 52px rgba(1, 16, 61, 0.1);
+}
+
+#erp-page .erp-card:hover::after {
+    opacity: 1;
+}
+
+#erp-page .erp-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    margin-bottom: 24px;
+    border-radius: 16px;
+    background: var(--erp-accent-soft, rgba(0, 140, 210, 0.1));
+    color: var(--erp-accent, var(--erp-blue));
+    font-size: 22px;
+}
+
+#erp-page .erp-card__title {
+    margin-bottom: 12px;
+    color: var(--erp-navy);
+    font-size: 21px;
+    font-weight: 800;
+}
+
+#erp-page .erp-card__text {
+    margin-bottom: 22px;
+    color: var(--erp-body);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+#erp-page .erp-card__list {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    border-top: 1px solid var(--erp-line);
+}
+
+#erp-page .erp-card__list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 0px;
+    border-bottom: 1px solid var(--erp-line);
+    color: var(--erp-navy);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#erp-page .erp-card__list li:last-child {
+    border-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+#erp-page .erp-card__list i {
+    margin-top: 4px;
+    color: var(--erp-accent, var(--erp-blue));
+    font-size: 12px;
+}
+
+/* ---------- deep dives ---------- */
+#erp-page .erp-dive {
+    background: var(--erp-soft);
+}
+
+#erp-page .erp-dive__row {
+    display: flex;
+    align-items: center;
+}
+
+#erp-page .erp-dive__row + .erp-dive__row {
+    margin-top: 90px;
+}
+
+#erp-page .erp-dive__row--flip .erp-dive__copy {
+    order: 2;
+}
+
+#erp-page .erp-dive__row--flip .erp-dive__art {
+    order: 1;
+}
+
+#erp-page .erp-dive__copy h3 {
+    margin-bottom: 16px;
+    color: var(--erp-navy);
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+#erp-page .erp-dive__copy h3 span {
+    color: var(--erp-blue);
+}
+
+#erp-page .erp-dive__copy p {
+    margin-bottom: 24px;
+    color: var(--erp-body);
+    font-size: 16px;
+    line-height: 1.75;
+}
+
+#erp-page .erp-dive__list {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+#erp-page .erp-dive__list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+    color: var(--erp-navy);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.6;
+}
+
+#erp-page .erp-dive__list li:last-child {
+    margin-bottom: 0px;
+}
+
+#erp-page .erp-dive__list i {
+    flex: 0 0 auto;
+    margin-top: 3px;
+    color: var(--erp-blue);
+}
+
+/* serial timeline artwork */
+#erp-page .erp-art {
+    padding: 32px;
+    border: 1px solid var(--erp-line);
+    border-radius: var(--erp-radius);
+    background: var(--tp-common-white);
+    box-shadow: 0px 20px 46px rgba(1, 16, 61, 0.08);
+}
+
+#erp-page .erp-art__label {
+    margin-bottom: 22px;
+    color: var(--erp-mute);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+#erp-page .erp-art__serial {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding: 14px 18px;
+    border: 1px dashed var(--erp-line);
+    border-radius: 14px;
+    background: var(--erp-soft);
+    color: var(--erp-navy);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+}
+
+#erp-page .erp-trail {
+    position: relative;
+    margin: 0px;
+    padding: 0px 0px 0px 26px;
+    list-style: none;
+}
+
+#erp-page .erp-trail::before {
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 5px;
+    width: 2px;
+    background: var(--erp-line);
+    content: "";
+}
+
+#erp-page .erp-trail li {
+    position: relative;
+    padding-bottom: 20px;
+}
+
+#erp-page .erp-trail li:last-child {
+    padding-bottom: 0px;
+}
+
+#erp-page .erp-trail li::before {
+    position: absolute;
+    top: 5px;
+    left: -26px;
+    width: 12px;
+    height: 12px;
+    border: 3px solid var(--tp-common-white);
+    border-radius: 50%;
+    background: var(--erp-blue);
+    box-shadow: 0 0 0 2px var(--erp-blue);
+    content: "";
+}
+
+#erp-page .erp-trail strong {
+    display: block;
+    color: var(--erp-navy);
+    font-size: 15px;
+    font-weight: 800;
+}
+
+#erp-page .erp-trail span {
+    color: var(--erp-body);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* stock split artwork */
+#erp-page .erp-split {
+    display: grid;
+    gap: 18px;
+}
+
+#erp-page .erp-split__panel {
+    padding: 24px;
+    border: 1px solid var(--erp-line);
+    border-radius: 16px;
+    background: var(--tp-common-white);
+}
+
+#erp-page .erp-split__panel h4 {
+    margin-bottom: 4px;
+    color: var(--erp-navy);
+    font-size: 16px;
+    font-weight: 800;
+}
+
+#erp-page .erp-split__panel > p {
+    margin-bottom: 16px;
+    color: var(--erp-mute);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+#erp-page .erp-split__bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 9px;
+    color: var(--erp-body);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#erp-page .erp-split__bar:last-child {
+    margin-bottom: 0px;
+}
+
+#erp-page .erp-split__bar b {
+    font-weight: 800;
+    color: var(--erp-navy);
+}
+
+#erp-page .erp-split__meter {
+    flex: 1 1 auto;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--erp-soft);
+    overflow: hidden;
+}
+
+#erp-page .erp-split__meter i {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--erp-accent, var(--erp-blue));
+}
+
+/* ---------- reports band ---------- */
+#erp-page .erp-reports {
+    background: linear-gradient(180deg, #000229 0%, #1117A0 100%);
+    overflow: hidden;
+}
+
+#erp-page .erp-reports .erp-heading {
+    color: var(--tp-common-white);
+}
+
+#erp-page .erp-reports .erp-heading span {
+    color: #7ED6F7;
+}
+
+#erp-page .erp-reports .erp-lead {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+#erp-page .erp-reports .erp-eyebrow {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.08);
+    color: #7ED6F7;
+}
+
+#erp-page .erp-report {
+    height: 100%;
+    padding: 30px 28px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.06);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#erp-page .erp-report:hover {
+    background: rgba(255, 255, 255, 0.11);
+    transform: translateY(-4px);
+}
+
+#erp-page .erp-report i {
+    margin-bottom: 18px;
+    color: #7ED6F7;
+    font-size: 22px;
+}
+
+#erp-page .erp-report h4 {
+    margin-bottom: 8px;
+    color: var(--tp-common-white);
+    font-size: 18px;
+    font-weight: 800;
+}
+
+#erp-page .erp-report p {
+    margin: 0px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+/* ---------- closing CTA ---------- */
+#erp-page .erp-cta {
+    padding: 100px 0px;
+    background: var(--tp-common-white);
+    text-align: center;
+}
+
+#erp-page .erp-cta h2 {
+    max-width: 780px;
+    margin: 0px auto 20px;
+    color: var(--erp-navy);
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+#erp-page .erp-cta h2 span {
+    color: var(--erp-blue);
+}
+
+#erp-page .erp-cta p {
+    max-width: 640px;
+    margin: 0px auto 34px;
+    color: var(--erp-body);
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+#erp-page .erp-cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+}
+
+#erp-page .erp-cta__note {
+    margin-top: 26px !important;
+    color: var(--erp-mute) !important;
+    font-size: 14px !important;
+}
+
+/* ---------- responsive ---------- */
+@media only screen and (max-width: 991px) {
+    #erp-page .erp-section,
+    #app-page .app-section {
+        padding: 80px 0px;
+    }
+
+    #erp-page .erp-heading,
+    #app-page .app-heading {
+        font-size: 34px;
+    }
+
+    #erp-page .erp-hero__title {
+        font-size: 42px;
+    }
+
+    #erp-page .erp-flow__track {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #erp-page .erp-dive__row {
+        gap: 40px;
+    }
+
+    #erp-page .erp-dive__row--flip .erp-dive__copy {
+        order: 0;
+    }
+
+    #erp-page .erp-dive__row--flip .erp-dive__art {
+        order: 0;
+    }
+
+    #erp-page .erp-dive__row + .erp-dive__row {
+        margin-top: 60px;
+    }
+
+    #erp-page .erp-dive__copy h3 {
+        font-size: 27px;
+    }
+
+    #erp-page .erp-cta h2,
+    #app-page .app-cta h2 {
+        font-size: 31px;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    #erp-page .erp-flow__track {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #erp-page .erp-hero__title {
+        font-size: 34px;
+    }
+
+    #erp-page .erp-hero__points {
+        gap: 12px 20px;
+    }
+
+    #erp-page .erp-card {
+        padding: 30px 24px;
+    }
+
+    #erp-page .erp-art {
+        padding: 24px 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    #erp-page .erp-step,
+    #erp-page .erp-card,
+    #erp-page .erp-btn,
+    #erp-page .erp-report {
+        transition: none;
+    }
+}
+
+/* ==========================================================================
+   HERO MEDIA SIZING (SHARED)
+   Every hero visual - the three image heroes and the app page's video - is
+   locked to the 1351 x 600 design frame, a 2.2517 ratio. The media is sized by
+   its own ratio and stays full-bleed, so at a 1351px wide hero it is exactly
+   1351x600 and it scales proportionally beyond that.
+
+   The sources are mixed ratios: index.png is 1521x688 (2.211, nearly a match)
+   while erp.png is 1366x768 (1.779) and the app video is 1280x720 (1.778). A
+   2.2517 frame is wider than any of them, so `cover` would scale to the full
+   width and throw away about 21% of the HEIGHT - and the top 40px of the
+   screenshot is real app chrome, not padding. Instead the media is scaled to fit
+   the whole frame (`contain`) and the leftover space is filled from the hero's
+   own background: the screenshot sits on the thumb's white and the video on
+   #020617, which matches its dark UI.
+
+   The CRM hero is no longer a screenshot at all - it is the live
+   assets/crm-dashboard.html mockup, which is already authored at this ratio and
+   fills the frame directly, so it needs no object-fit.
+
+   Note erp.png is dark navy on the left edge and light grey on the right, so
+   its letterbox bands cannot blend on both sides at once. If that seam matters,
+   the real fix is re-authoring erp.png at 1351x600.
+
+   Scoped to the full-width hero variant rather than the base
+   .tp-hero-3-main-thumb class, so the theme's other uses of that class keep
+   their own sizing.
+   ========================================================================== */
+
+.tp-hero-3-full-width .tp-hero-3-main-thumb {
+    aspect-ratio: 1351 / 600;
+}
+
+.tp-hero-3-full-width .tp-hero-3-main-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Teal accent rules above and below the CRM and ERP heroes, which are both live
+   1351x600 dashboard mockups. Scoped to those two so the index hero keeps its
+   plain edges. box-sizing is border-box here, so the 4px of border is taken
+   out of the 1351x600 frame rather than pushing the hero taller - the outer
+   ratio is unchanged and each mockup just renders 4px shorter inside the
+   lines. */
+#crm-features .tp-hero-3-full-width .tp-hero-3-main-thumb,
+.erp-hero .tp-hero-3-full-width .tp-hero-3-main-thumb {
+    border-top: 2px solid #1F7A8C;
+    border-bottom: 2px solid #1F7A8C;
+}
+
+/* The CRM hero is a live 1351x600 dashboard mockup in assets/crm-dashboard.html
+   rather than a flat screenshot, so the frame just gives it the box to fill -
+   no object-fit needed, and the mockup's own page background carries the edges. */
+.tp-hero-3-full-width .tp-hero-3-main-thumb iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0px;
+}
+
+/* ==========================================================================
+   MOBILE APP PAGE
+   Scoped to #app-page. Shares the primitives above (tokens, section rhythm,
+   eyebrow, heading, lead, buttons) and adds the app-only pieces: the hero,
+   the CSS phone frame used to show real app screens, the capability grid,
+   the offline/why band and the closing CTA.
+   ========================================================================== */
+
+/* the frame is driven purely by its own 16:9 ratio so the player fills the
+   full page width edge to edge - capping the height would make the box wider
+   than 16:9 and the video would be letterboxed with black bars */
+/* same 1351 x 600 frame as the image heroes, see the shared block above. The
+   box is sized by its own ratio and the 16:9 video is scaled to cover it, which
+   takes roughly 21% off the left and right edges rather than leaving bars. */
+#app-page .app-hero--video {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1351 / 600;
+    padding: 0px;
+    background: #020617;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+#app-page .app-hero--video .app-hero__media {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    z-index: 1;
+    background: #020617;
+}
+
+#app-page .app-hero--video .app-hero__media video {
+    width: 100%;
+    height: 100%;
+    border: 0px;
+}
+
+/* same 1351 x 600 frame as the image heroes, see the shared block above. The
+   16:9 video is scaled to fit the whole frame and the leftover side space shows
+   the #020617 behind it, which is close to the video's own dark UI. */
+#app-page .app-hero--video .app-hero__media video {
+    display: block;
+    object-fit: contain;
+}
+
+/* ---------- store badge row ---------- */
+#app-page .app-stores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 26px;
+}
+
+#app-page .app-stores--center {
+    justify-content: center;
+    margin-top: 30px;
+}
+
+#app-page .app-store {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 22px;
+    border: 1px solid var(--erp-line);
+    border-radius: 14px;
+    background: var(--tp-common-white);
+    color: var(--erp-navy);
+    font-size: 14px;
+    font-weight: 800;
+    overflow: hidden;
+    transition: color 0.35s ease, border-color 0.35s ease;
+}
+
+#app-page .app-store::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    background-color: var(--tp-common-black);
+    content: "";
+    transform: translate(-50%, -50%);
+    transition: width 0.7s ease, height 0.7s ease;
+}
+
+#app-page .app-store:hover::before {
+    width: 400px;
+    height: 400px;
+}
+
+#app-page .app-store>* {
+    position: relative;
+    z-index: 2;
+}
+
+#app-page .app-store i {
+    color: var(--erp-blue);
+    font-size: 20px;
+    transition: color 0.35s ease;
+}
+
+#app-page .app-store small {
+    display: block;
+    color: var(--erp-mute);
+    font-size: 11px;
+    font-weight: 600;
+    transition: color 0.35s ease;
+}
+
+#app-page .app-store:hover {
+    border-color: var(--tp-common-black);
+    color: var(--tp-common-white);
+}
+
+#app-page .app-store:hover i,
+#app-page .app-store:hover small {
+    color: var(--tp-common-white);
+}
+
+/* ---------- capability screen rows ---------- */
+#app-page .app-screens {
+    background: var(--erp-soft);
+}
+
+#app-page .app-screen__row {
+    display: flex;
+    align-items: center;
+}
+
+#app-page .app-screen__row + .app-screen__row {
+    margin-top: 110px;
+}
+
+#app-page .app-screen__row--flip .app-screen__phone {
+    order: 2;
+}
+
+#app-page .app-screen__copy h3 {
+    margin-bottom: 16px;
+    color: var(--erp-navy);
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+#app-page .app-screen__copy h3 span {
+    color: var(--erp-blue);
+}
+
+#app-page .app-screen__copy > p {
+    margin-bottom: 26px;
+    color: var(--erp-body);
+    font-size: 16px;
+    line-height: 1.75;
+}
+
+#app-page .app-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+#app-page .app-feature__icon {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: var(--app-accent-soft, rgba(0, 140, 210, 0.1));
+    color: var(--app-accent, var(--erp-blue));
+    font-size: 17px;
+}
+
+#app-page .app-feature h4 {
+    margin-bottom: 4px;
+    color: var(--erp-navy);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+#app-page .app-feature p {
+    margin: 0px;
+    color: var(--erp-body);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+/* ---------- the phone itself ---------- */
+#app-page .app-phone {
+    position: relative;
+    width: 320px;
+    max-width: 100%;
+    margin: 0px auto;
+    padding: 12px;
+    border: 2px solid #10132E;
+    border-radius: 44px;
+    background: #10132E;
+    box-shadow: 0px 34px 70px rgba(1, 16, 61, 0.24);
+}
+
+#app-page .app-phone::after {
+    position: absolute;
+    top: 26px;
+    left: 50%;
+    width: 92px;
+    height: 6px;
+    border-radius: 999px;
+    background: #10132E;
+    content: "";
+    transform: translateX(-50%);
+}
+
+#app-page .app-phone__screen {
+    display: flex;
+    flex-direction: column;
+    min-height: 566px;
+    padding: 34px 16px 16px;
+    border-radius: 34px;
+    background: #FFFFFF;
+    overflow: hidden;
+}
+
+#app-page .app-phone__status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    color: var(--erp-navy);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+#app-page .app-phone__status span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+#app-page .app-phone__appbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+#app-page .app-phone__appbar h5 {
+    margin: 0px;
+    color: var(--erp-navy);
+    font-size: 16px;
+    font-weight: 800;
+}
+
+#app-page .app-phone__appbar i {
+    color: var(--app-accent, var(--erp-blue));
+    font-size: 15px;
+}
+
+#app-page .app-phone__card {
+    margin-bottom: 10px;
+    padding: 12px 14px;
+    border: 1px solid var(--erp-line);
+    border-radius: 14px;
+    background: #FFFFFF;
+}
+
+#app-page .app-phone__card--accent {
+    border-color: transparent;
+    background: var(--app-accent, var(--erp-blue));
+    color: var(--tp-common-white);
+}
+
+#app-page .app-phone__card--accent b,
+#app-page .app-phone__card--accent strong {
+    color: var(--tp-common-white);
+}
+
+#app-page .app-phone__card b {
+    display: block;
+    color: var(--erp-navy);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+#app-page .app-phone__card small {
+    color: var(--erp-mute);
+    font-size: 11px;
+}
+
+#app-page .app-phone__card--accent small {
+    color: rgba(255, 255, 255, 0.78);
+}
+
+#app-page .app-phone__row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#app-page .app-phone__row + .app-phone__row {
+    margin-top: 8px;
+}
+
+#app-page .app-phone__avatar {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    background: var(--app-accent-soft, rgba(0, 140, 210, 0.1));
+    color: var(--app-accent, var(--erp-blue));
+    font-size: 12px;
+}
+
+#app-page .app-phone__meta {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+#app-page .app-phone__meta b {
+    font-size: 12px;
+}
+
+#app-page .app-phone__meta small {
+    display: block;
+}
+
+#app-page .app-phone__tag {
+    flex: 0 0 auto;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: var(--app-accent-soft, rgba(0, 140, 210, 0.1));
+    color: var(--app-accent, var(--erp-blue));
+    font-size: 10px;
+    font-weight: 800;
+}
+
+#app-page .app-phone__bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 54px;
+    margin-top: 6px;
+}
+
+#app-page .app-phone__bars i {
+    flex: 1 1 auto;
+    border-radius: 4px 4px 0px 0px;
+    background: var(--app-accent, var(--erp-blue));
+    opacity: 0.85;
+}
+
+#app-page .app-phone__total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0px 12px;
+    padding: 0px 2px;
+    color: var(--erp-navy);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+#app-page .app-phone__total b {
+    color: var(--app-accent, var(--erp-blue));
+    font-size: 15px;
+}
+
+#app-page .app-phone__cta {
+    display: block;
+    padding: 11px;
+    border-radius: 12px;
+    background: var(--app-accent, var(--erp-blue));
+    color: var(--tp-common-white);
+    font-size: 12px;
+    font-weight: 800;
+    text-align: center;
+}
+
+#app-page .app-phone__tabs {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto -4px -4px;
+    padding: 12px 6px 0px;
+    border-top: 1px solid var(--erp-line);
+}
+
+#app-page .app-phone__tabs i {
+    color: #C9CCD6;
+    font-size: 15px;
+}
+
+#app-page .app-phone__tabs i.is-on {
+    color: var(--app-accent, var(--erp-blue));
+}
+
+/* ---------- every capability, as an app feature grid ---------- */
+#app-page .app-capabilities {
+    background: var(--tp-common-white);
+}
+
+#app-page .app-tile {
+    height: 100%;
+    padding: 28px 24px;
+    border: 1px solid var(--erp-line);
+    border-radius: 16px;
+    background: var(--tp-common-white);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+#app-page .app-tile:hover {
+    border-color: rgba(0, 140, 210, 0.32);
+    transform: translateY(-5px);
+    box-shadow: 0px 20px 40px rgba(1, 16, 61, 0.09);
+}
+
+#app-page .app-tile__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 18px;
+    border-radius: 14px;
+    background: var(--app-accent-soft, rgba(0, 140, 210, 0.1));
+    color: var(--app-accent, var(--erp-blue));
+    font-size: 18px;
+}
+
+#app-page .app-tile h4 {
+    margin-bottom: 8px;
+    color: var(--erp-navy);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+#app-page .app-tile p {
+    margin: 0px;
+    color: var(--erp-body);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+/* ---------- offline / why band ---------- */
+#app-page .app-why {
+    background: linear-gradient(180deg, #000229 0%, #1117A0 100%);
+    overflow: hidden;
+}
+
+#app-page .app-why .app-heading {
+    color: var(--tp-common-white);
+}
+
+#app-page .app-why .app-heading span {
+    color: #7ED6F7;
+}
+
+#app-page .app-why .app-lead {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+#app-page .app-why .app-eyebrow {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.08);
+    color: #7ED6F7;
+}
+
+#app-page .app-why__item {
+    height: 100%;
+    padding: 28px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.06);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#app-page .app-why__item:hover {
+    background: rgba(255, 255, 255, 0.11);
+    transform: translateY(-4px);
+}
+
+#app-page .app-why__item i {
+    margin-bottom: 16px;
+    color: #7ED6F7;
+    font-size: 21px;
+}
+
+#app-page .app-why__item h4 {
+    margin-bottom: 8px;
+    color: var(--tp-common-white);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+#app-page .app-why__item p {
+    margin: 0px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+/* ---------- closing CTA ---------- */
+#app-page .app-cta {
+    padding: 100px 0px;
+    background: var(--tp-common-white);
+    text-align: center;
+}
+
+#app-page .app-cta h2 {
+    max-width: 780px;
+    margin: 0px auto 20px;
+    color: var(--erp-navy);
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+#app-page .app-cta h2 span {
+    color: var(--erp-blue);
+}
+
+#app-page .app-cta p {
+    max-width: 640px;
+    margin: 0px auto 34px;
+    color: var(--erp-body);
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+#app-page .app-cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+}
+
+#app-page .app-cta__note {
+    margin-top: 26px !important;
+    color: var(--erp-mute) !important;
+    font-size: 14px !important;
+}
+
+@media only screen and (max-width: 991px) {
+
+    #app-page .app-screen__row + .app-screen__row {
+        margin-top: 70px;
+    }
+
+    #app-page .app-screen__copy h3 {
+        font-size: 27px;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+
+    #app-page .app-phone {
+        width: 280px;
+        border-radius: 38px;
+    }
+
+    #app-page .app-phone__screen {
+        border-radius: 30px;
+    }
+
+    #app-page .app-stores--center {
+        justify-content: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    #app-page .app-btn,
+    #app-page .app-store,
+    #app-page .app-tile,
+    #app-page .app-why__item {
+        transition: none;
+    }
+
+    #erp-page .erp-btn::before,
+    #app-page .app-btn::before,
+    #app-page .app-store::before {
+        transition: none;
     }
 }
 
@@ -15534,7 +17192,7 @@ only screen and (min-width: 1200px) and (max-width: 1399px) {
     border: 2px solid rgba(255, 255, 255, 0.14);
     box-shadow: 0px 30px 60px rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(8px);
-    border-radius: 30px;
+    border-radius: 20px;
     padding: 30px;
     padding-left: 65px;
 }
@@ -15631,11 +17289,11 @@ only screen and (min-width: 1200px) and (max-width: 1399px) {
     }
 }
 
-.tp-testimonial-3-author-info h5 {
+.tp-testimonial-3-author-info .tp-testimonial-3-author-name {
     font-weight: 700;
     font-size: 18px;
     line-height: 16px;
-    color: var(--tp-common-white);
+    color: #202124;
     font-family: var(--tp-ff-urban);
 }
 
@@ -19012,7 +20670,7 @@ only screen and (min-width: 768px) and (max-width: 991px),
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
-.tp-footer__social-3 h4 {
+.tp-footer__social-3 .tp-footer__social-title {
     font-weight: 600;
     font-size: 18px;
     line-height: 16px;
@@ -19759,7 +21417,7 @@ only screen and (min-width: 768px) and (max-width: 991px) {
     color: #202124;
 }
 
-.tp-footer__input-inner .tp-footer__social-3 h4 {
+.tp-footer__input-inner .tp-footer__social-3 .tp-footer__social-title {
     padding-bottom: 8px;
     margin-bottom: 0;
 }
@@ -19929,7 +21587,7 @@ only screen and (min-width: 768px) and (max-width: 991px) {
     color: rgba(255, 255, 255, 0.6);
 }
 
-.footer-widget-5 .tp-footer__social-3 h4 {
+.footer-widget-5 .tp-footer__social-3 .tp-footer__social-title {
     margin-bottom: 0;
 }
 

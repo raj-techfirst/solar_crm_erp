@@ -49,13 +49,24 @@
 	///////////////////////////////////////////////////
 	// 04. Scroll Up Js
 	if ($('.scroll-to-target').length) {
-		$(".scroll-to-target").on('click', function () {
-		var target = $(this).attr('data-target');
-		// animate
-		$('html, body').animate({
-			scrollTop: $(target).offset().top
-		}, 1000);
-	
+		$(".scroll-to-target").on('click', function (event) {
+			event.preventDefault();
+			var target = $(this).attr('data-target');
+			var targetElement = target ? $(target)[0] : null;
+			var top = target === 'html' || target === 'body' || !targetElement
+				? 0
+				: targetElement.getBoundingClientRect().top + window.pageYOffset;
+			var smoother = window.ScrollSmoother && typeof window.ScrollSmoother.get === 'function'
+				? window.ScrollSmoother.get()
+				: null;
+
+			if (smoother) {
+				smoother.scrollTo(top);
+			} else {
+				$('html, body').stop(true).animate({
+					scrollTop: top
+				}, 1000);
+			}
 		});
 	}
 
@@ -93,14 +104,31 @@
 
 	///////////////////////////////////////////////////
 	// 07. Sticky Header Js
-	windowOn.on('scroll', function () {
-		var scroll = windowOn.scrollTop();
-		if (scroll < 400) {
-			$("#header-sticky").removeClass("header-sticky");
-		} else {
-			$("#header-sticky").addClass("header-sticky");
+	// The bar starts in the normal flow, so it keeps its real place at the top of the
+	// page. Pin it as soon as it would otherwise scroll out of view - the threshold is
+	// the bar's own height, so the handover happens exactly at the viewport top and the
+	// page never jumps.
+	var headerSticky = $('#header-sticky');
+	var headerStickyWrap = headerSticky.closest('.tp-header-height');
+
+	function headerStickyTrigger() {
+		if (!headerStickyWrap.length) {
+			return headerSticky.outerHeight() || 80;
 		}
-	});
+		return headerStickyWrap.outerHeight() || 80;
+	}
+
+	function toggleStickyHeader() {
+		if (windowOn.scrollTop() > headerStickyTrigger()) {
+			headerSticky.addClass("header-sticky");
+		} else {
+			headerSticky.removeClass("header-sticky");
+		}
+	}
+
+	windowOn.on('scroll', toggleStickyHeader);
+	windowOn.on('resize', toggleStickyHeader);
+	toggleStickyHeader();
 
 	////////////////////////////////////////////////////
 	// 08. Mobile Menu Js
@@ -761,20 +789,33 @@
 	  window.addEventListener('resize', mediaSize, false); 
 
 
-	  if ($('.tp-header-height').length > 0) {
-		var headerHeight = document.querySelector(".tp-header-height");      
-		var setHeaderHeight = headerHeight.offsetHeight;	
-		$(".tp-header-height").each(function () {
-			$(this).css({
-				'height' : setHeaderHeight + 'px'
-			});
-		});
-				
-		$(".tp-header-height.header-sticky").each(function () {
-			$(this).css({
-				'height' : inherit,
-			});
-		});
+	  // Reserve the navbar's band and its height on the <header> wrapper. The bar itself
+	  // is in the flow, so the wrapper already has that height, but pinning the bar to
+	  // fixed takes it out of the flow - the reserved height is what stops the page from
+	  // jumping. #smooth-content gets the same value as padding so the navbar keeps its
+	  // own place at the top of the page and page content starts below it.
+	  function reserveHeaderHeight() {
+		  var height = headerSticky.outerHeight() || 0;
+
+		  headerStickyWrap.css({
+			  'height': height + 'px'
+		  });
+		  document.documentElement.style.setProperty('--tp-header-space', height + 'px');
+
+		  // The band changes the scrolled height, so ScrollSmoother has to remeasure.
+		  var smoother = window.ScrollSmoother && typeof window.ScrollSmoother.get === 'function'
+			  ? window.ScrollSmoother.get()
+			  : null;
+
+		  if (smoother) {
+			  smoother.refresh();
+		  }
+	  }
+
+	  if (headerStickyWrap.length) {
+		  reserveHeaderHeight();
+		  windowOn.on('load', reserveHeaderHeight);
+		  windowOn.on('resize', reserveHeaderHeight);
 	  }
 	
 
@@ -1352,13 +1393,51 @@ if ($('.tp-header-top-animation').length > 0) {
 	if ($('#myInput').length > 0) {
 		function myFunction() {
 			var x = document.getElementById("myInput");
-			if (x.type === "password") {
-			   x.type = "text";
+			if (x.type == "password") {
+				x.type = "text";
 			} else {
-			   x.type = "password";
+				x.type = "password";
 			}
 		}
 	}
+
+
+	/* The mobile app hero video skips its intro and loops from the 7s mark.
+	   The #t=7 media fragment in the src covers the first seek natively, but a
+	   looping <video> resets the clock to 0 on every pass, so the offset has to be
+	   re-applied each time around or the intro replays between loops. */
+	if ($('.app-hero__media video').length > 0) {
+		$('.app-hero__media video').each(function () {
+			var heroVideo = this;
+			var heroVideoStart = parseFloat(heroVideo.getAttribute('data-start')) || 0;
+			var heroVideoGuard = -1;
+
+			heroVideo.addEventListener('loadedmetadata', function () {
+				if (heroVideo.currentTime < heroVideoStart) {
+					heroVideo.currentTime = heroVideoStart;
+				}
+			});
+
+			heroVideo.addEventListener('timeupdate', function () {
+				var now = heroVideo.currentTime;
+
+				// back above the start mark, so arm the guard for the next loop
+				if (now >= heroVideoStart - 0.25) {
+					heroVideoGuard = -1;
+					return;
+				}
+
+				// skip while a seek is in flight, and skip a repeated reading of the
+				// same stuck value, so seeks can never stack up on top of each other
+				if (heroVideo.seeking || now === heroVideoGuard) {
+					return;
+				}
+
+			heroVideoGuard = now;
+			heroVideo.currentTime = heroVideoStart;
+		});
+	});
+}
 
 
 })(jQuery);

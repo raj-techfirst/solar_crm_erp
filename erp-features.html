@@ -39,7 +39,7 @@
         <i class="far fa-angle-double-up"></i>
     </button>
 
-    <a href="https://wa.me/8906311311" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
+    <a href="https://wa.me/918906311311" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
         <i class="fab fa-whatsapp"></i>
     </a>
 
@@ -59,7 +59,7 @@
                                     <li><a href="index.html">Home</a></li>
                                     <li><a href="crm-features.html">CRM Features</a></li>
                                     <li><a href="erp-features.html" aria-current="page">ERP Features</a></li>
-                                    <li><a href="modules.html">Modules</a></li>
+                                    <li><a href="mobile-app.html">Mobile App</a></li>
                                     <li><a href="contact.html">Contact</a></li>
                                 </ul>
                             </nav>
@@ -93,15 +93,13 @@
             </div>
             <div class="mobile-menu"></div>
             <div class="tpoffcanvas__info text-center">
-                <h4 class="offcanva-title">Contact Us</h4>
+                <p class="offcanva-title">Contact Us</p>
                 <a href="mailto:info@techfirsterp.com">info@techfirsterp.com</a>
             </div>
             <div class="tpoffcanvas__social">
                 <div class="social-icon text-center">
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-facebook-square"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="tel:+918906311311" aria-label="Call TechFirst Solar"><i class="fas fa-phone"></i></a>
+                    <a href="mailto:info@techfirsterp.com" aria-label="Email TechFirst Solar"><i class="fas fa-envelope"></i></a>
                 </div>
             </div>
         </div>
@@ -111,67 +109,354 @@
     <div id="smooth-wrapper">
         <div id="smooth-content">
 
-            <main class="fix">
+            <main class="fix" id="erp-page">
 
-                <div id="erp-features" class="tp-rated-area fix p-relative">
-                    <div class="tp-rated-bg pt-120" data-background="assets/img/rate/rated-bg.jpg">
-                        <div class="tp-rated-shape-1 d-none d-lg-block">
-                            <img src="assets/img/rate/rate-shape-1.png" alt="">
+                <!-- Hero -->
+                <div class="erp-hero p-relative">
+                    <div class="tp-hero-3-wrapper tp-hero-3-full-width p-relative">
+                        <div class="tp-hero-3-main-thumb z-index-5">
+                            <iframe src="assets/erp-dashboard.html" title="TechFirst Solar ERP dashboard showing purchase orders, warehouse stock, monthly activity and low stock alerts" loading="eager"></iframe>
                         </div>
-                        <div class="tp-rated-shape-2 d-none d-sm-block">
-                            <img src="assets/img/rate/rate-shape-2.png" alt="">
+                    </div>
+                    <div class="container erp-hero__copy">
+                        <p class="erp-eyebrow wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".1s">TechFirst Solar ERP</p>
+                        <h1 class="erp-hero__title hero-text-anim">
+                            Run the back office from<br>
+                            <span>one stock ledger</span>
+                        </h1>
+                        <p class="erp-lead wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
+                            Purchase orders, goods receipt, warehouse and project-wise stock, delivery
+                            challans, installation consumption and reports &mdash; all recorded against the
+                            same project the CRM started, so nothing is retyped between sales and site.
+                        </p>
+                        <div class="erp-hero__actions wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s">
+                            <a class="erp-btn erp-btn--primary" href="contact.html">
+                                <span>Schedule a Demo</span>
+                                <i class="fal fa-arrow-right"></i>
+                            </a>
+                            <a class="erp-btn erp-btn--ghost" href="#erp-modules">
+                                <span>See the modules</span>
+                            </a>
                         </div>
-                        <div class="container z-index-6">
-                            <div class="row justify-content-center">
-                                <div class="col-xl-10">
-                                    <div class="tp-rated-title-box text-center mb-60">
-                                        <h5 class="tp-section-title-3 text-white pb-20">Solar ERP Features</h5>
-                                        <h3 class="tp-section-title-3 text-white pb-40">
-                                            <span>Complete Operations</span> Management<br>
-                                            for Your <span>Solar Business</span>
-                                        </h3>
-                                        <a class="tp-btn-blue-lg tp-btn-hover alt-color-white" href="contact.html">
-                                            <span class="text-color-black">Schedule a Demo</span>
-                                            <b></b>
-                                        </a>
+                        <ul class="erp-hero__points wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".7s">
+                            <li><i class="fal fa-check"></i> Serial-level tracking</li>
+                            <li><i class="fal fa-check"></i> Project-wise consumption</li>
+                            <li><i class="fal fa-check"></i> Exportable reports</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Operational spine -->
+                <div class="erp-section erp-flow">
+                    <div class="container">
+                        <div class="erp-section-head">
+                            <p class="erp-eyebrow wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".1s">The operational spine</p>
+                            <h2 class="erp-heading wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".2s">
+                                Every module hangs off <span>one project record</span>
+                            </h2>
+                            <p class="erp-lead wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
+                                Material only tells the truth when it can be traced back to the job that
+                                needed it. The ERP follows the same thread the CRM opened &mdash; enquiry to
+                                AMC &mdash; so a serial, a challan and an invoice all point at the same installation.
+                            </p>
+                        </div>
+                        <ol class="erp-flow__track">
+                            <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".1s">
+                                <span class="erp-step__num">1</span>
+                                <h3 class="erp-step__title">Enquiry</h3>
+                                <p class="erp-step__text">A lead becomes a project with a site, a customer and a capacity to quote against.</p>
+                                <span class="erp-step__tag">From CRM</span>
+                            </li>
+                            <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".2s">
+                                <span class="erp-step__num">2</span>
+                                <h3 class="erp-step__title">Site Survey</h3>
+                                <p class="erp-step__text">Survey findings and the approved design fix the BoM, so procurement starts from facts.</p>
+                                <span class="erp-step__tag">Design locked</span>
+                            </li>
+                            <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
+                                <span class="erp-step__num">3</span>
+                                <h3 class="erp-step__title">Quotation</h3>
+                                <p class="erp-step__text">Price built from live item rates and margins, not from a spreadsheet someone edited last year.</p>
+                                <span class="erp-step__tag">Rate master</span>
+                            </li>
+                            <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".4s">
+                                <span class="erp-step__num">4</span>
+                                <h3 class="erp-step__title">Purchase Order</h3>
+                                <p class="erp-step__text">Raise the PO against the project or the supplier, and see what is still pending.</p>
+                                <span class="erp-step__tag">Procurement</span>
+                            </li>
+                            <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s">
+                                <span class="erp-step__num">5</span>
+                                <h3 class="erp-step__title">Good Receipt</h3>
+                                <p class="erp-step__text">Book material in against the PO, or raise a direct GRN when there is no PO at all.</p>
+                                <span class="erp-step__tag">Stock inward</span>
+                            </li>
+                            <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".6s">
+                                <span class="erp-step__num">6</span>
+                                <h3 class="erp-step__title">Warehouse Stock</h3>
+                                <p class="erp-step__text">Opening, inward, outward and closing quantities settle themselves per item.</p>
+                                <span class="erp-step__tag">Central ledger</span>
+                            </li>
+                            <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".7s">
+                                <span class="erp-step__num">7</span>
+                                <h3 class="erp-step__title">Delivery Challan</h3>
+                                <p class="erp-step__text">Material leaves for site with serials listed, and returns come back on a return challan.</p>
+                                <span class="erp-step__tag">Dispatch</span>
+                            </li>
+                            <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".8s">
+                                <span class="erp-step__num">8</span>
+                                <h3 class="erp-step__title">Installation &amp; AMC</h3>
+                                <p class="erp-step__text">Site consumption is confirmed, the project closes, and service history carries forward.</p>
+                                <span class="erp-step__tag">Handover</span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Modules -->
+                <div class="erp-section erp-modules" id="erp-modules">
+                    <div class="container">
+                        <div class="erp-section-head">
+                            <p class="erp-eyebrow wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".1s">The modules</p>
+                            <h2 class="erp-heading wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".2s">
+                                Six modules that cover <span>store to site</span>
+                            </h2>
+                            <p class="erp-lead wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
+                                Each one is usable on its own and better together. They share the same item
+                                master, so a receipt, a challan and a report are always talking about the same thing.
+                            </p>
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-lg-4 col-md-6">
+                                <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".1s" style="--erp-accent: #008cd2; --erp-accent-soft: rgba(0, 140, 210, 0.1);">
+                                    <span class="erp-card__icon"><i class="fas fa-warehouse"></i></span>
+                                    <h3 class="erp-card__title">Warehouse Stock</h3>
+                                    <p class="erp-card__text">The central ledger for every item you trade. Book inward from a receipt, outward against a challan, and let opening and closing balance themselves.</p>
+                                    <ul class="erp-card__list">
+                                        <li><i class="fal fa-check"></i> Item-wise ledgers</li>
+                                        <li><i class="fal fa-check"></i> Opening &amp; closing auto-computed</li>
+                                        <li><i class="fal fa-check"></i> Low-stock flags</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".2s" style="--erp-accent: #FF7A41; --erp-accent-soft: rgba(255, 122, 65, 0.12);">
+                                    <span class="erp-card__icon"><i class="fas fa-file-invoice"></i></span>
+                                    <h3 class="erp-card__title">Purchase Order</h3>
+                                    <p class="erp-card__text">Raise a PO against a project or a supplier with agreed rates and terms, then track exactly how much is still outstanding.</p>
+                                    <ul class="erp-card__list">
+                                        <li><i class="fal fa-check"></i> Supplier-wise POs</li>
+                                        <li><i class="fal fa-check"></i> Pending quantity tracking</li>
+                                        <li><i class="fal fa-check"></i> Rate &amp; terms on record</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s" style="--erp-accent: #5FC33B; --erp-accent-soft: rgba(95, 195, 59, 0.14);">
+                                    <span class="erp-card__icon"><i class="fas fa-box-open"></i></span>
+                                    <h3 class="erp-card__title">Good Receipt</h3>
+                                    <p class="erp-card__text">Book material in against a purchase order, or raise a direct GRN when a supplier delivers without one. Serials are captured at the point of entry.</p>
+                                    <ul class="erp-card__list">
+                                        <li><i class="fal fa-check"></i> PO-linked GRN</li>
+                                        <li><i class="fal fa-check"></i> Direct GRN without PO</li>
+                                        <li><i class="fal fa-check"></i> Serial capture at receipt</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".4s" style="--erp-accent: #5138EE; --erp-accent-soft: rgba(81, 56, 238, 0.1);">
+                                    <span class="erp-card__icon"><i class="fas fa-truck-fast"></i></span>
+                                    <h3 class="erp-card__title">Delivery Challan</h3>
+                                    <p class="erp-card__text">Send material to site with the serials listed on the challan. Record what the installer actually consumed and close the loop on anything returned.</p>
+                                    <ul class="erp-card__list">
+                                        <li><i class="fal fa-check"></i> Project-wise dispatch</li>
+                                        <li><i class="fal fa-check"></i> Return challan</li>
+                                        <li><i class="fal fa-check"></i> Site confirmation</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s" style="--erp-accent: #FF3C82; --erp-accent-soft: rgba(255, 60, 130, 0.1);">
+                                    <span class="erp-card__icon"><i class="fas fa-sitemap"></i></span>
+                                    <h3 class="erp-card__title">Projectwise Stock</h3>
+                                    <p class="erp-card__text">Stock reserved, issued and consumed for each installation, kept separate from the main warehouse so a busy project cannot hide a shortage.</p>
+                                    <ul class="erp-card__list">
+                                        <li><i class="fal fa-check"></i> Reserved vs issued</li>
+                                        <li><i class="fal fa-check"></i> Per-project requirement view</li>
+                                        <li><i class="fal fa-check"></i> Shortfall alerts</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".6s" style="--erp-accent: #FFAB0A; --erp-accent-soft: rgba(255, 171, 10, 0.14);">
+                                    <span class="erp-card__icon"><i class="fas fa-chart-line"></i></span>
+                                    <h3 class="erp-card__title">Report &amp; Analysis</h3>
+                                    <p class="erp-card__text">Turn the ledger into the numbers you actually review in a Monday meeting, then export them for your accountant without rebuilding anything.</p>
+                                    <ul class="erp-card__list">
+                                        <li><i class="fal fa-check"></i> Stock history by item</li>
+                                        <li><i class="fal fa-check"></i> Purchase rate variance</li>
+                                        <li><i class="fal fa-check"></i> Export to Excel</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deep dives -->
+                <div class="erp-section erp-dive">
+                    <div class="container">
+                        <div class="row align-items-center erp-dive__row">
+                            <div class="col-lg-6 erp-dive__copy">
+                                <h3>Every serial has <span>a history you can read</span></h3>
+                                <p>
+                                    A panel that arrived on the 4th, sat in the warehouse for nine days and was
+                                    installed on the 13th is a warranty question waiting to happen. Tracking
+                                    serials from inward through dispatch to site means a recall or a service
+                                    call is a lookup, not an investigation.
+                                </p>
+                                <ul class="erp-dive__list">
+                                    <li><i class="fal fa-check-circle"></i> Serial numbers captured at goods receipt</li>
+                                    <li><i class="fal fa-check-circle"></i> Same serials printed on the delivery challan</li>
+                                    <li><i class="fal fa-check-circle"></i> Installation consumption confirmed on site</li>
+                                    <li><i class="fal fa-check-circle"></i> Warranty claims start from a real trail</li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6 erp-dive__art">
+                                <div class="erp-art">
+                                    <p class="erp-art__label">Serial trace &middot; INV-25-0418</p>
+                                    <div class="erp-art__serial">
+                                        <i class="fas fa-barcode"></i>
+                                        <span>SPV-MOD-450W &middot; SN 8841-2277</span>
+                                    </div>
+                                    <ul class="erp-trail">
+                                        <li>
+                                            <strong>Goods receipt &mdash; 04 Mar</strong>
+                                            <span>Received against PO-0912 from supplier. Serial verified at inward.</span>
+                                        </li>
+                                        <li>
+                                            <strong>Warehouse &mdash; 04 to 13 Mar</strong>
+                                            <span>Held in central stock, allocated to project &ldquo;Riverside 5 kW&rdquo;.</span>
+                                        </li>
+                                        <li>
+                                            <strong>Delivery challan &mdash; 13 Mar</strong>
+                                            <span>Dispatched on DC-0341, acknowledged by the site engineer.</span>
+                                        </li>
+                                        <li>
+                                            <strong>Installed &mdash; 13 Mar</strong>
+                                            <span>Consumption confirmed against the project BoM. Warranty clock starts.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center erp-dive__row erp-dive__row--flip">
+                            <div class="col-lg-6 erp-dive__copy">
+                                <h3>Warehouse stock and project stock are <span>different questions</span></h3>
+                                <p>
+                                    &ldquo;How much do we have?&rdquo; and &ldquo;How much does this installation
+                                    still need?&rdquo; fail you in opposite directions. A healthy warehouse can
+                                    still leave a project short, so the ERP answers both separately &mdash; and
+                                    flags the gap before the crew is standing in a bare terrace.
+                                </p>
+                                <ul class="erp-dive__list">
+                                    <li><i class="fal fa-check-circle"></i> Central ledger stays independent of any project</li>
+                                    <li><i class="fal fa-check-circle"></i> Requirement, issued and consumed tracked per project</li>
+                                    <li><i class="fal fa-check-circle"></i> Shortfall raised before dispatch is planned</li>
+                                    <li><i class="fal fa-check-circle"></i> Adjustments recorded, never silently overwritten</li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6 erp-dive__art">
+                                <div class="erp-art">
+                                    <p class="erp-art__label">Same item, two views</p>
+                                    <div class="erp-split">
+                                        <div class="erp-split__panel" style="--erp-accent: #008cd2;">
+                                            <p>Warehouse stock &middot; Module 450W</p>
+                                            <h4>What we hold</h4>
+                                            <div class="erp-split__bar"><span>In hand</span><b>142</b><span class="erp-split__meter"><i style="width: 78%"></i></span></div>
+                                            <div class="erp-split__bar"><span>Reserved</span><b>38</b><span class="erp-split__meter"><i style="width: 21%"></i></span></div>
+                                            <div class="erp-split__bar"><span>Available</span><b>104</b><span class="erp-split__meter"><i style="width: 57%"></i></span></div>
+                                        </div>
+                                        <div class="erp-split__panel" style="--erp-accent: #FF3C82;">
+                                            <p>Project stock &middot; Riverside 5 kW</p>
+                                            <h4>What this site still needs</h4>
+                                            <div class="erp-split__bar"><span>Required</span><b>24</b><span class="erp-split__meter"><i style="width: 100%"></i></span></div>
+                                            <div class="erp-split__bar"><span>Issued</span><b>19</b><span class="erp-split__meter"><i style="width: 79%"></i></span></div>
+                                            <div class="erp-split__bar"><span>Short by</span><b>5</b><span class="erp-split__meter"><i style="width: 21%"></i></span></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="author-rated-wrapper">
-                                <div class="row">
-                                    <div class="col-xl-4 col-lg-4 col-md-4">
-                                        <div class="author-rated text-center">
-                                            <div class="author-rated-icon">
-                                                <i class="fas fa-warehouse fa-2x" style="color: #f6ad55;"></i>
-                                            </div>
-                                            <p>"Power Up Your Warehouse - Where Solar Meets Smart Storage!"</p>
-                                            <h5 style="color: #fff;">Warehouse Management</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4 col-lg-4 col-md-4">
-                                        <div class="author-rated text-center">
-                                            <div class="author-rated-icon">
-                                                <i class="fas fa-shopping-cart fa-2x" style="color: #48bb78;"></i>
-                                            </div>
-                                            <p>"Procurement Made Powerful - From Sunlight to Stockroom!"</p>
-                                            <h5 style="color: #fff;">Purchase Order Management</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4 col-lg-4 col-md-4">
-                                        <div class="author-rated text-center">
-                                            <div class="author-rated-icon">
-                                                <i class="fas fa-boxes fa-2x" style="color: #667eea;"></i>
-                                            </div>
-                                            <p>"From Receipt to Return - Solar ERP Tracks It All!"</p>
-                                            <h5 style="color: #fff;">Goods Management</h5>
-                                        </div>
-                                    </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports band -->
+                <div class="erp-section erp-reports">
+                    <div class="container">
+                        <div class="erp-section-head">
+                            <p class="erp-eyebrow wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".1s">Report &amp; analysis</p>
+                            <h2 class="erp-heading wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".2s">
+                                The four reports that run <span>a solar business</span>
+                            </h2>
+                            <p class="erp-lead wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
+                                Not a hundred exports to choose from. These are the ones worth
+                                having open, and every one of them is a live view of the same ledger.
+                            </p>
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="erp-report h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".1s">
+                                    <i class="fas fa-layer-group"></i>
+                                    <h4>Stock History</h4>
+                                    <p>Every inward, outward and adjustment for an item, with the running balance, so a wrong quantity can be traced to a date.</p>
                                 </div>
                             </div>
-                            <div class="author-rated-big-img" data-parallax='{"y": 100, "smoothness": 30}'>
-                                <img src="assets/img/rate/rated-img.png" alt="">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="erp-report h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".2s">
+                                    <i class="fas fa-clipboard-list"></i>
+                                    <h4>Required Stock</h4>
+                                    <p>What the approved BoM calls for, against what each project has actually received. The report that catches a short site.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="erp-report h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
+                                    <i class="fas fa-chart-pie"></i>
+                                    <h4>Purchase Analysis</h4>
+                                    <p>Spend by supplier, item and month, with rate variance against your own master, so margin leaks show up early.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="erp-report h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".4s">
+                                    <i class="fas fa-file-export"></i>
+                                    <h4>Dispatch Summary</h4>
+                                    <p>Challans issued, material consumed and returns pending, grouped by project and ready to export for your accountant.</p>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Closing CTA -->
+                <div class="erp-cta">
+                    <div class="container">
+                        <h2>See your own projects move through the ERP</h2>
+                        <p>
+                            Bring one live installation &mdash; an open quotation, a pending
+                            purchase order, a site waiting on modules &mdash; and we will walk it
+                            through the modules in a single sitting.
+                        </p>
+                        <div class="erp-cta__actions">
+                            <a class="erp-btn erp-btn--primary" href="contact.html">
+                                <span>Schedule a Demo</span>
+                                <i class="fal fa-arrow-right"></i>
+                            </a>
+                            <a class="erp-btn erp-btn--ghost" href="mobile-app.html">
+                                                <span>See it on mobile</span>
+                            </a>
+                        </div>
+                        <p class="erp-cta__note">No commitment required. Personalised walkthrough, usually within 24 hours.</p>
                     </div>
                 </div>
 
@@ -193,7 +478,7 @@
                                     <div class="footer-slide-wrapper">
                                         <div class="footer-slide-item">
                                             <i class="fal fa-check"></i>
-                                            <span>Lightning-fast Onboarding</span>
+                                            <span>Lead to AMC Lifecycle</span>
                                         </div>
                                     </div>
                                     <div class="footer-slide-wrapper">
@@ -205,31 +490,31 @@
                                     <div class="footer-slide-wrapper">
                                         <div class="footer-slide-item">
                                             <i class="fal fa-check"></i>
-                                            <span>Multi-platform Support</span>
+                                            <span>BoM &amp; Serial Tracking</span>
                                         </div>
                                     </div>
                                     <div class="footer-slide-wrapper">
                                         <div class="footer-slide-item">
                                             <i class="fal fa-check"></i>
-                                            <span>24/7 Support</span>
+                                            <span>Warehouse &amp; Project Stock</span>
                                         </div>
                                     </div>
                                     <div class="footer-slide-wrapper">
                                         <div class="footer-slide-item">
                                             <i class="fal fa-check"></i>
-                                            <span>Real-time Analytics</span>
+                                            <span>Dispatch &amp; Installation</span>
                                         </div>
                                     </div>
                                     <div class="footer-slide-wrapper">
                                         <div class="footer-slide-item">
                                             <i class="fal fa-check"></i>
-                                            <span>Smart Automation</span>
+                                            <span>Quotation &amp; Rate Calculator</span>
                                         </div>
                                     </div>
                                     <div class="footer-slide-wrapper">
                                         <div class="footer-slide-item">
                                             <i class="fal fa-check"></i>
-                                            <span>Inventory Management</span>
+                                            <span>Reports &amp; Export</span>
                                         </div>
                                     </div>
                                 </div>
@@ -277,38 +562,40 @@
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-6 pb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s">
                                         <div class="tp-footer__widget footer-widget-3 footer-col-3-2">
-                                            <h4 class="tp-footer__widget-title">CRM Features</h4>
+                                            <h2 class="tp-footer__widget-title">CRM Features</h2>
                                             <div class="tp-footer__content">
                                                 <ul>
-                                                    <li><a href="crm-features.html">Lead Management</a></li>
-                                                    <li><a href="crm-features.html">Sales Pipeline</a></li>
-                                                    <li><a href="crm-features.html">Quotation &amp; Estimates</a></li>
                                                     <li><a href="crm-features.html">User Management</a></li>
-                                                    <li><a href="modules.html">Reports &amp; Analytics</a></li>
+                                                    <li><a href="crm-features.html">Lead Management</a></li>
+                                                    <li><a href="crm-features.html">Quotation Management</a></li>
+                                                    <li><a href="crm-features.html">Sales Order Management</a></li>
+                                                    <li><a href="crm-features.html">Payment Management</a></li>
+                                                    <li><a href="mobile-app.html">Reports &amp; Analysis</a></li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-2 col-lg-2 col-md-6 pb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".7s">
                                         <div class="tp-footer__widget footer-widget-3 footer-col-3-3">
-                                            <h4 class="tp-footer__widget-title">ERP Features</h4>
+                                            <h2 class="tp-footer__widget-title">ERP Features</h2>
                                             <div class="tp-footer__content">
                                                 <ul>
-                                                    <li><a href="erp-features.html">Purchase Orders</a></li>
-                                                    <li><a href="modules.html">Warehouse</a></li>
-                                                    <li><a href="modules.html">Goods Management</a></li>
-                                                    <li><a href="modules.html">Dispatch</a></li>
-                                                    <li><a href="modules.html">BoM Management</a></li>
+                                                    <li><a href="erp-features.html">Warehouse Stock</a></li>
+                                                    <li><a href="erp-features.html">Purchase Order</a></li>
+                                                    <li><a href="erp-features.html">Good Receipt</a></li>
+                                                    <li><a href="erp-features.html">Delivery Challan</a></li>
+                                                    <li><a href="erp-features.html">Projectwise Stock</a></li>
+                                                    <li><a href="mobile-app.html">Report &amp; Analysis</a></li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-lg-4 col-md-6 pb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".9s">
                                         <div class="tp-footer__widget footer-widget-3 footer-col-3-4">
-                                            <h4 class="tp-footer__widget-title">Get In Touch</h4>
+                                            <h2 class="tp-footer__widget-title">Get In Touch</h2>
                                             <div class="tp-footer__input mb-35 p-relative">
-                                                <form action="#">
-                                                    <input type="email" placeholder="Your email address">
+                                                <form action="contact.html" method="get">
+                                                    <input type="email" name="email" placeholder="Your email address" aria-label="Your email address">
                                                     <span>
                                                         <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M13 14.6H5C2.6 14.6 1 13.4 1 10.6V5C1 2.2 2.6 1 5 1H13C15.4 1 17 2.2 17 5V10.6C17 13.4 15.4 14.6 13 14.6Z" stroke="#5F6168" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
@@ -324,11 +611,10 @@
                                                 </form>
                                             </div>
                                             <div class="tp-footer__social-3">
-                                                <h4>Follow Us</h4>
-                                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                                <a href="#"><i class="fab fa-instagram"></i></a>
-                                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                                <h2 class="tp-footer__social-title">Talk To Us</h2>
+                                                <a href="tel:+918906311311" aria-label="Call TechFirst Solar"><i class="fas fa-phone"></i></a>
+                                                <a href="mailto:info@techfirsterp.com" aria-label="Email TechFirst Solar"><i class="fas fa-envelope"></i></a>
+                                                <a href="contact.html" aria-label="Contact form"><i class="fas fa-paper-plane"></i></a>
                                             </div>
                                         </div>
                                     </div>
