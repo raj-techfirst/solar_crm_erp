@@ -15654,6 +15654,7 @@ only screen and (min-width: 768px) and (max-width: 991px),
     --erp-mute: #9A9DA7;
     --erp-line: #EBECF0;
     --erp-soft: #F7F9FB;
+    --home-ink: #0A6FAE;
     --erp-radius: 20px;
 }
 
@@ -16243,26 +16244,29 @@ only screen and (min-width: 768px) and (max-width: 991px),
 
 /* ---------- reports band ---------- */
 #erp-page .erp-reports {
-    background: linear-gradient(180deg, #000229 0%, #1117A0 100%);
+    background: #F0F8FF;
     overflow: hidden;
 }
 
-#erp-page .erp-reports .erp-heading {
-    color: var(--tp-common-white);
+#erp-page .erp-reports .erp-report {
+    border: 1px solid var(--erp-line);
+    background: var(--tp-common-white);
 }
 
-#erp-page .erp-reports .erp-heading span {
-    color: #7ED6F7;
+#erp-page .erp-reports .erp-report:hover {
+    background: var(--erp-soft);
 }
 
-#erp-page .erp-reports .erp-lead {
-    color: rgba(255, 255, 255, 0.72);
+#erp-page .erp-reports .erp-report i {
+    color: var(--erp-blue);
 }
 
-#erp-page .erp-reports .erp-eyebrow {
-    border-color: rgba(255, 255, 255, 0.22);
-    background: rgba(255, 255, 255, 0.08);
-    color: #7ED6F7;
+#erp-page .erp-reports .erp-report h4 {
+    color: var(--erp-navy);
+}
+
+#erp-page .erp-reports .erp-report p {
+    color: var(--erp-body);
 }
 
 #erp-page .erp-report {
@@ -16473,11 +16477,246 @@ only screen and (min-width: 768px) and (max-width: 991px),
 /* The CRM hero is a live 1351x600 dashboard mockup in assets/crm-dashboard.html
    rather than a flat screenshot, so the frame just gives it the box to fill -
    no object-fit needed, and the mockup's own page background carries the edges. */
-.tp-hero-3-full-width .tp-hero-3-main-thumb iframe {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border: 0px;
+    .tp-hero-3-full-width .tp-hero-3-main-thumb iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0px;
+    }
+
+    /* MOBILE DASHBOARD HEIGHT
+       The frame is a 1351x600 (approx 2.25:1) letterbox, so on a 390px phone it
+       was only ~167px tall - far too short to read a dashboard, and the copy
+       above it had to be dropped to fit. Below 768px the ratio is released for a
+       height that scales with the screen instead: the floor keeps the mockup
+       usable on small phones, the cap stops a tablet from turning the hero into
+       a wall of dashboard, and the vh term follows the device either way.
+       Scoped to the two dashboard heroes via the same page hooks as the teal
+       borders above, so the index hero - which uses the identical class names for
+       a static screenshot - keeps its original 2.25:1 crop. */
+    @media only screen and (max-width: 767px) {
+        #crm-features .tp-hero-3-full-width .tp-hero-3-main-thumb,
+        .erp-hero .tp-hero-3-full-width .tp-hero-3-main-thumb {
+            aspect-ratio: auto;
+            height: 58vh;
+            min-height: 380px;
+            max-height: 520px;
+        }
+    }
+
+
+/* ==========================================================================
+   HERO DASHBOARD REVEAL
+   Shared by the CRM and ERP heroes, which both embed a live 1351x600 dashboard
+   mockup inside .tp-hero-3-main-thumb. A frosted layer sits over the mockup so
+   the hero reads as a product shot rather than a wall of numbers, and the
+   "Explore Dashboard" button fades that layer away to leave the dashboard
+   sharp and fully readable.
+
+   The locked state is driven by .is-revealed on the frame, so revealing never
+   re-renders or re-requests the mockup - only the layer above it animates out.
+   The plain rgba wash is the fallback for browsers without backdrop-filter,
+   where the dashboard stays dimmed but readable behind the panel.
+
+   The overlay copy is built from <p> rather than a heading on purpose: on both
+   pages the dashboard frame comes before the hero <h1> in the source order, so
+   a heading here would sit above the h1 in the document outline.
+   ========================================================================== */
+
+.tp-dashboard-lock {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    display: flex;
+    padding: 40px 24px;
+    text-align: center;
+    background-color: rgba(0, 2, 41, 0.45);
+    -webkit-backdrop-filter: blur(7px) saturate(115%);
+    backdrop-filter: blur(7px) saturate(115%);
+    overflow-y: auto;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+/* The even navy wash alone lands the copy on a muddy mid-tone against the light
+   mockup, which fails contrast for the 15px body line. This radial deepens the
+   navy only behind the copy and lets it fall away to nothing at the edges, so
+   the dashboard stays clearly visible around the panel while the text sits on a
+   dark enough field to read. */
+.tp-dashboard-lock::before {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0, 2, 41, 0.62) 0%, rgba(0, 2, 41, 0.34) 48%, rgba(0, 2, 41, 0) 74%);
+    content: "";
+    pointer-events: none;
+}
+
+.tp-hero-3-main-thumb.is-revealed .tp-dashboard-lock {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* margin:auto rather than align-items/justify-content:center. The frame keeps a
+   1351x600 aspect ratio, so on a 390px phone the frame is only ~167px tall and
+   the panel can be taller than it. Centring with auto margins keeps the copy
+   centred when it fits and falls back to the top when it does not, whereas
+   align-items:center would push the top of the panel out of the scrollable
+   area and strand the button. */
+.tp-dashboard-lock__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 560px;
+    margin: auto;
+}
+
+/* The copy flips to light to sit on the dark wash, and the halo flips with it.
+   Both mockups are light-themed (#f5f7f8 page, #fff cards) so the dashboard
+   still reads clearly through a 45% navy veil at a 7px blur. */
+.tp-dashboard-lock__eyebrow,
+.tp-dashboard-lock__title,
+.tp-dashboard-lock__text {
+    text-shadow: 0px 1px 12px rgba(0, 2, 41, 0.75);
+}
+
+.tp-dashboard-lock__eyebrow {
+    margin-bottom: 10px;
+    color: #7fe3f0;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.tp-dashboard-lock__title {
+    margin-bottom: 12px;
+    color: var(--tp-common-white);
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.tp-dashboard-lock__text {
+    margin-bottom: 26px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* Same pill + black circle wipe as .erp-btn / .app-btn, restated here so one
+   rule can serve both the CRM and the ERP hero. */
+.tp-dashboard-lock__btn {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 30px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background-color: #008cd2;
+    color: var(--tp-common-white);
+    box-shadow: 0px 14px 30px rgba(0, 140, 210, 0.28);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+    overflow: hidden;
+    cursor: pointer;
+    transition: color 0.35s ease, box-shadow 0.25s ease;
+}
+
+.tp-dashboard-lock__btn::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    background-color: var(--tp-common-black);
+    content: "";
+    transform: translate(-50%, -50%);
+    transition: width 0.7s ease, height 0.7s ease;
+}
+
+.tp-dashboard-lock__btn:hover::before {
+    width: 400px;
+    height: 400px;
+}
+
+.tp-dashboard-lock__btn>* {
+    position: relative;
+    z-index: 2;
+}
+
+.tp-dashboard-lock__btn:hover {
+    color: var(--tp-common-white);
+    box-shadow: 0px 16px 34px rgba(0, 2, 41, 0.32);
+}
+
+.tp-dashboard-lock__btn:focus-visible {
+    outline: 2px solid var(--tp-common-black);
+    outline-offset: 3px;
+}
+
+/* The lock is decorative on a short hero, so stack the copy tighter and drop the
+   blur radius rather than letting the panel push past the frame. */
+@media only screen and (max-width: 767px) {
+    .tp-dashboard-lock {
+        padding: 20px 16px;
+        -webkit-backdrop-filter: blur(5px) saturate(110%);
+        backdrop-filter: blur(5px) saturate(110%);
+    }
+
+    .tp-dashboard-lock__title {
+        margin-bottom: 8px;
+        font-size: 21px;
+    }
+
+    .tp-dashboard-lock__text {
+        margin-bottom: 18px;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .tp-dashboard-lock__btn {
+        padding: 13px 24px;
+        font-size: 14px;
+    }
+}
+
+/* The description used to be dropped below 575px because the 1351x600 frame was
+   shorter than the copy plus the button. The taller mobile frame above now
+   leaves room for it, so the copy stays intact down to the smallest phones and
+   the button is no longer the only thing keeping its balance. The scrolling on
+   .tp-dashboard-lock remains as a last-resort backstop. */
+
+@media only screen and (max-width: 400px) {
+    .tp-dashboard-lock {
+        padding: 12px 12px;
+    }
+
+    .tp-dashboard-lock__eyebrow {
+        margin-bottom: 6px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+    }
+
+    .tp-dashboard-lock__title {
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+
+    .tp-dashboard-lock__btn {
+        padding: 12px 20px;
+        font-size: 13px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tp-dashboard-lock,
+    .tp-dashboard-lock__btn::before {
+        transition: none;
+    }
 }
 
 /* ==========================================================================
@@ -16939,58 +17178,48 @@ only screen and (min-width: 768px) and (max-width: 991px),
 
 /* ---------- offline / why band ---------- */
 #app-page .app-why {
-    background: linear-gradient(180deg, #000229 0%, #1117A0 100%);
+    background: #F0F8FF;
     overflow: hidden;
 }
 
-#app-page .app-why .app-heading {
-    color: var(--tp-common-white);
-}
-
-#app-page .app-why .app-heading span {
-    color: #7ED6F7;
-}
-
-#app-page .app-why .app-lead {
-    color: rgba(255, 255, 255, 0.72);
-}
-
+/* on the light band the heading and lead inherit the same navy / body tokens as
+   every other section; the eyebrow and the item cards need their own rules,
+   because the default --erp-blue only reaches 3.7:1 as 12px text on #F0F8FF. */
 #app-page .app-why .app-eyebrow {
-    border-color: rgba(255, 255, 255, 0.22);
-    background: rgba(255, 255, 255, 0.08);
-    color: #7ED6F7;
+    color: var(--home-ink);
 }
 
 #app-page .app-why__item {
     height: 100%;
     padding: 28px 24px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid var(--erp-line);
     border-radius: 18px;
-    background: rgba(255, 255, 255, 0.06);
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    background: var(--tp-common-white);
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 #app-page .app-why__item:hover {
-    background: rgba(255, 255, 255, 0.11);
+    border-color: rgba(0, 140, 210, 0.45);
+    box-shadow: 0 20px 44px rgba(0, 2, 41, 0.08);
     transform: translateY(-4px);
 }
 
 #app-page .app-why__item i {
     margin-bottom: 16px;
-    color: #7ED6F7;
+    color: var(--home-ink);
     font-size: 21px;
 }
 
 #app-page .app-why__item h4 {
     margin-bottom: 8px;
-    color: var(--tp-common-white);
+    color: var(--erp-navy);
     font-size: 17px;
     font-weight: 800;
 }
 
 #app-page .app-why__item p {
     margin: 0px;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--erp-body);
     font-size: 14px;
     line-height: 1.65;
 }
@@ -17076,6 +17305,717 @@ only screen and (min-width: 768px) and (max-width: 991px),
     #erp-page .erp-btn::before,
     #app-page .app-btn::before,
     #app-page .app-store::before {
+        transition: none;
+    }
+}
+
+/* ==========================================================================
+   HOME PAGE
+   Scoped to #home-page so nothing leaks into the other pages. Reuses the
+   tokens and primitives from the ERP and app pages above - the navy/blue
+   palette, the eyebrow/heading/lead triple, and the button whose black circle
+   wipes in from the centre - and adds the home-only pieces: the hero, the stat
+   rail, the dark one-record band, the lifecycle rail, the three surface cards,
+   the capability grid, the audience cards and the closing CTA.
+
+   The hero keeps the theme's own full-width screenshot frame
+   (assets/img/hero/index.png) and its left-hand shape, so the transparent
+   navbar and the shared 1351x600 hero sizing are untouched.
+   ========================================================================== */
+
+#home-page {
+    --erp-navy: #000229;
+    --erp-blue: #008cd2;
+    --erp-indigo: #1117A0;
+    --erp-body: #5F6368;
+    --erp-mute: #9A9DA7;
+    --erp-line: #EBECF0;
+    --erp-soft: #F7F9FB;
+    --erp-radius: 20px;
+    /* --erp-blue is a bright brand tone that measures 3.7:1 on white - fine for
+       the large headings it tints, but short of the 4.5:1 that small text needs.
+       This is the same hue stepped down, used for the small labels, links and
+       icons on this page so they clear AA without changing the brand colour of
+       the buttons and headings. Scoped to the home page, not a shared token. */
+    --home-ink: #0A6FAE;
+    --home-ink-soft: #6B6F79;
+}
+
+#home-page .home-section {
+    padding: 110px 0px;
+    position: relative;
+}
+
+#home-page .home-eyebrow {
+    display: inline-block;
+    margin-bottom: 18px;
+    padding: 7px 16px;
+    border: 1px solid var(--erp-line);
+    border-radius: 999px;
+    background: var(--tp-common-white);
+    color: var(--home-ink);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+#home-page .home-heading {
+    margin-bottom: 18px;
+    color: var(--erp-navy);
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+}
+
+#home-page .home-heading span {
+    color: var(--erp-blue);
+}
+
+#home-page .home-lead {
+    max-width: 720px;
+    margin-bottom: 0px;
+    color: var(--erp-body);
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+#home-page .home-section-head {
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+#home-page .home-section-head .home-lead {
+    margin: 0px auto;
+}
+
+/* ---------- buttons ---------- */
+#home-page .home-btn {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 30px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+    overflow: hidden;
+    transition: color 0.35s ease, border-color 0.35s ease, box-shadow 0.25s ease;
+}
+
+#home-page .home-btn::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    background-color: var(--tp-common-black);
+    content: "";
+    transform: translate(-50%, -50%);
+    transition: width 0.7s ease, height 0.7s ease;
+}
+
+#home-page .home-btn:hover::before {
+    width: 400px;
+    height: 400px;
+}
+
+#home-page .home-btn>* {
+    position: relative;
+    z-index: 2;
+}
+
+#home-page .home-btn--primary {
+    background: var(--home-ink);
+    color: var(--tp-common-white);
+}
+
+#home-page .home-btn--primary:hover {
+    color: var(--tp-common-white);
+}
+
+#home-page .home-btn--ghost {
+    border-color: var(--erp-line);
+    background: var(--tp-common-white);
+    color: var(--erp-navy);
+}
+
+#home-page .home-btn--ghost:hover {
+    color: var(--tp-common-white);
+}
+
+/* ---------- hero ---------- */
+#home-page .home-hero {
+    background: linear-gradient(180deg, #FFFFFF 0%, #F7F9FB 100%);
+    overflow: hidden;
+}
+
+#home-page .home-hero__copy {
+    position: relative;
+    z-index: 5;
+    padding: 56px 0px 30px;
+    text-align: center;
+}
+
+#home-page .home-hero__copy .home-lead {
+    max-width: 800px;
+    margin: 0px auto;
+}
+
+#home-page .home-hero__title {
+    margin-bottom: 22px;
+    color: var(--erp-navy);
+    font-size: 58px;
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+}
+
+#home-page .home-hero__title span {
+    color: var(--erp-blue);
+}
+
+#home-page .home-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+    margin-top: 34px;
+}
+
+#home-page .home-hero__points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 30px;
+    justify-content: center;
+    margin: 32px 0px 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+#home-page .home-hero__points li {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--erp-body);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+#home-page .home-hero__points i {
+    color: var(--home-ink);
+    font-size: 13px;
+}
+
+/* ---------- stat rail ---------- */
+#home-page .home-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border: 1px solid var(--erp-line);
+    border-radius: 24px;
+    background: var(--tp-common-white);
+    box-shadow: 0 18px 44px rgba(0, 2, 41, 0.06);
+    list-style: none;
+    overflow: hidden;
+}
+
+#home-page .home-stats li {
+    padding: 34px 26px;
+    text-align: center;
+}
+
+#home-page .home-stats li+li {
+    border-left: 1px solid var(--erp-line);
+}
+
+#home-page .home-stats__num {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--erp-navy);
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+#home-page .home-stats__label {
+    display: block;
+    color: var(--erp-body);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* ---------- the one record ---------- */
+#home-page .home-thread {
+    padding: 100px 0px;
+    background: #F0F8FF;
+}
+
+/* the eyebrow, heading and lead need no rules of their own here - on a light
+   band they inherit the same navy / blue / body tokens as every other
+   section, so only the item cards below need to be re-surfaced. */
+
+#home-page .home-thread__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 60px;
+    align-items: center;
+}
+
+#home-page .home-thread__list {
+    display: grid;
+    gap: 14px;
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+#home-page .home-thread__item {
+    display: flex;
+    gap: 16px;
+    padding: 20px 22px;
+    border: 1px solid var(--erp-line);
+    border-radius: 16px;
+    background: var(--tp-common-white);
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#home-page .home-thread__item:hover {
+    border-color: rgba(0, 140, 210, 0.45);
+    box-shadow: 0 20px 44px rgba(0, 2, 41, 0.08);
+    transform: translateY(-5px);
+}
+
+#home-page .home-thread__item i {
+    flex-shrink: 0;
+    margin-top: 3px;
+    color: var(--home-ink);
+    font-size: 19px;
+}
+
+#home-page .home-thread__item h3 {
+    margin-bottom: 5px;
+    color: var(--erp-navy);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+#home-page .home-thread__item p {
+    margin: 0px;
+    color: var(--erp-body);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+/* ---------- lifecycle rail ---------- */
+#home-page .home-rail {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px;
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+#home-page .home-rail__step {
+    height: 100%;
+    padding: 34px 30px;
+    border: 1px solid var(--erp-line);
+    border-radius: var(--erp-radius);
+    background: var(--tp-common-white);
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#home-page .home-rail__step:hover {
+    border-color: rgba(0, 140, 210, 0.45);
+    box-shadow: 0 20px 44px rgba(0, 2, 41, 0.08);
+    transform: translateY(-5px);
+}
+
+#home-page .home-rail__node {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+    background: rgba(0, 140, 210, 0.1);
+    color: var(--home-ink);
+    font-size: 15px;
+    font-weight: 800;
+}
+
+#home-page .home-rail__step h3 {
+    margin-bottom: 10px;
+    color: var(--erp-navy);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+#home-page .home-rail__step p {
+    margin: 0px;
+    color: var(--erp-body);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* ---------- the three surfaces ---------- */
+#home-page .home-surfaces {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px;
+}
+
+#home-page .home-surface {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 36px 32px;
+    border: 1px solid var(--erp-line);
+    border-radius: var(--erp-radius);
+    background: var(--tp-common-white);
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#home-page .home-surface:hover {
+    border-color: rgba(0, 140, 210, 0.45);
+    box-shadow: 0 22px 48px rgba(0, 2, 41, 0.09);
+    transform: translateY(-5px);
+}
+
+#home-page .home-surface__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 22px;
+    border-radius: 18px;
+    background: rgba(0, 140, 210, 0.1);
+    color: var(--home-ink);
+    font-size: 24px;
+}
+
+#home-page .home-surface__tag {
+    align-self: flex-start;
+    margin-bottom: 14px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--erp-soft);
+    color: var(--erp-indigo);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+#home-page .home-surface h3 {
+    margin-bottom: 10px;
+    color: var(--erp-navy);
+    font-size: 22px;
+    font-weight: 800;
+}
+
+#home-page .home-surface p {
+    margin: 0px 0px 20px;
+    color: var(--erp-body);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+#home-page .home-surface__list {
+    display: grid;
+    gap: 10px;
+    margin: 0px 0px 26px;
+    padding: 0px;
+    list-style: none;
+}
+
+#home-page .home-surface__list li {
+    display: flex;
+    gap: 10px;
+    color: var(--erp-body);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+#home-page .home-surface__list i {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--home-ink);
+    font-size: 13px;
+}
+
+#home-page .home-surface__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: auto;
+    color: var(--home-ink);
+    font-size: 15px;
+    font-weight: 700;
+    transition: gap 0.3s ease, color 0.3s ease;
+}
+
+#home-page .home-surface__link:hover {
+    gap: 15px;
+    color: var(--erp-indigo);
+}
+
+/* ---------- capability grid ---------- */
+#home-page .home-caps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px;
+}
+
+#home-page .home-cap {
+    height: 100%;
+    padding: 32px 30px;
+    border: 1px solid var(--erp-line);
+    border-radius: var(--erp-radius);
+    background: var(--tp-common-white);
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#home-page .home-cap:hover {
+    border-color: rgba(0, 140, 210, 0.45);
+    box-shadow: 0 20px 44px rgba(0, 2, 41, 0.08);
+    transform: translateY(-5px);
+}
+
+#home-page .home-cap__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 20px;
+    border-radius: 16px;
+    background: var(--erp-soft);
+    color: var(--home-ink);
+    font-size: 21px;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+#home-page .home-cap:hover .home-cap__icon {
+    background: var(--home-ink);
+    color: var(--tp-common-white);
+    transform: scale(1.05);
+}
+
+#home-page .home-cap h3 {
+    margin-bottom: 10px;
+    color: var(--erp-navy);
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+#home-page .home-cap p {
+    margin: 0px;
+    color: var(--erp-body);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* ---------- who it is for ---------- */
+#home-page .home-aud {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+#home-page .home-aud__item {
+    display: flex;
+    gap: 20px;
+    height: 100%;
+    padding: 30px;
+    border: 1px solid var(--erp-line);
+    border-radius: var(--erp-radius);
+    background: var(--tp-common-white);
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#home-page .home-aud__item:hover {
+    border-color: rgba(0, 140, 210, 0.45);
+    box-shadow: 0 20px 44px rgba(0, 2, 41, 0.08);
+    transform: translateY(-5px);
+}
+
+#home-page .home-aud__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: rgba(0, 140, 210, 0.1);
+    color: var(--home-ink);
+    font-size: 21px;
+}
+
+#home-page .home-aud__item h3 {
+    margin-bottom: 8px;
+    color: var(--erp-navy);
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+#home-page .home-aud__item p {
+    margin: 0px;
+    color: var(--erp-body);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* ---------- closing CTA ---------- */
+#home-page .home-cta {
+    padding: 100px 0px;
+    background: var(--tp-common-white);
+    text-align: center;
+}
+
+#home-page .home-cta h2 {
+    max-width: 780px;
+    margin: 0px auto 20px;
+    color: var(--erp-navy);
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+#home-page .home-cta h2 span {
+    color: var(--erp-blue);
+}
+
+#home-page .home-cta p {
+    max-width: 640px;
+    margin: 0px auto 34px;
+    color: var(--erp-body);
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+#home-page .home-cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+}
+
+#home-page .home-cta__note {
+    margin-top: 26px !important;
+    color: var(--home-ink-soft) !important;
+    font-size: 14px !important;
+}
+
+/* ---------- responsive ---------- */
+@media only screen and (max-width: 991px) {
+    #home-page .home-section {
+        padding: 80px 0px;
+    }
+
+    #home-page .home-heading {
+        font-size: 34px;
+    }
+
+    #home-page .home-hero__title {
+        font-size: 42px;
+    }
+
+    #home-page .home-rail,
+    #home-page .home-surfaces,
+    #home-page .home-caps {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #home-page .home-thread__grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 44px;
+    }
+
+    #home-page .home-cta h2 {
+        font-size: 31px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    #home-page .home-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #home-page .home-stats li+li {
+        border-left: 0px;
+    }
+
+    #home-page .home-stats li:nth-child(even) {
+        border-left: 1px solid var(--erp-line);
+    }
+
+    #home-page .home-stats li:nth-child(n+3) {
+        border-top: 1px solid var(--erp-line);
+    }
+
+    #home-page .home-aud {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* three surface cards over two columns leaves a half-empty row, so the
+       last one takes the full width until the grid drops to a single column */
+    #home-page .home-surfaces .home-surface:last-child {
+        grid-column: 1 / -1;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    #home-page .home-hero__title {
+        font-size: 33px;
+    }
+
+    #home-page .home-hero__points {
+        gap: 12px 20px;
+    }
+
+    #home-page .home-rail,
+    #home-page .home-surfaces,
+    #home-page .home-caps {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #home-page .home-surface,
+    #home-page .home-rail__step,
+    #home-page .home-cap {
+        padding: 28px 24px;
+    }
+
+    #home-page .home-hero__actions .home-btn,
+    #home-page .home-cta__actions .home-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    #home-page .home-btn::before,
+    #home-page .home-surface,
+    #home-page .home-cap,
+    #home-page .home-rail__step,
+    #home-page .home-aud__item,
+    #home-page .home-thread__item,
+    #home-page .home-cap__icon {
         transition: none;
     }
 }
@@ -21608,6 +22548,106 @@ only screen and (min-width: 768px) and (max-width: 991px) {
 
 .footer-widget-5 .tp-footer__contact-info p {
     font-weight: 500;
+}
+
+/* ==========================================================================
+   CONTACT PAGE
+   Scoped to #contact so nothing leaks into the other pages. This block replaces
+   the nine inline style attributes and the mid-body <style> block that used to
+   live in contact.html, and it adds the .tp-about__list-item rules for the
+   "Prefer to talk first?" phone/email/WhatsApp links, which the theme never
+   defined anywhere - those anchors were rendering unstyled.
+
+   The icon badge reuses the circular treatment from .tp-about__list ul li i
+   (same 20px circle, white glyph) in the site's blue instead of the red check,
+   and the WhatsApp row keeps the brand green so the channel reads at a glance.
+   ========================================================================== */
+
+#contact .tp-about__list-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: fit-content;
+    margin-bottom: 18px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.3;
+    color: var(--tp-common-black);
+    transition: color 0.3s ease;
+}
+
+#contact .tp-about__list-item:last-child {
+    margin-bottom: 0;
+}
+
+#contact .tp-about__list-item i {
+    flex: 0 0 40px;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 15px;
+    color: var(--tp-common-white);
+    background-color: #5a67d8;
+}
+
+#contact .tp-about__list-item:hover {
+    color: #5a67d8;
+}
+
+#contact .tp-about__list-item--whatsapp i {
+    background-color: #25d366;
+}
+
+#contact .tp-about__list-item--whatsapp:hover {
+    color: #128c4a;
+}
+
+#contact .demo-form-wrapper {
+    background: var(--tp-common-white);
+    border-radius: 20px;
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+#contact .demo-form__title {
+    color: #01103D;
+    font-size: 24px;
+}
+
+#contact .demo-request-form__field {
+    width: 100%;
+    padding: 15px 20px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    background: var(--tp-common-white);
+    color: var(--tp-common-black);
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+#contact .demo-request-form__select {
+    color: #666;
+    cursor: pointer;
+}
+
+#contact .demo-request-form__message {
+    resize: none;
+}
+
+#contact .demo-request-form__field:focus {
+    border-color: #5a67d8;
+    outline: none;
+    box-shadow: 0px 0px 0px 3px rgba(90, 103, 216, 0.1);
+}
+
+#contact .demo-request-form__field::placeholder {
+    color: #999;
+}
+
+#contact .demo-request-form__submit {
+    border: none;
+    cursor: pointer;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -618,6 +618,91 @@
   }
 
   /* ==========================================================================
+     MOBILE SIDEBAR
+     Below 900px the sidebar leaves the flow and slides in from the left as an
+     overlay, so the stat cards and tables get the full width instead of being
+     squeezed by a permanent column. The hamburger in the topbar toggles it; the
+     scrim, the x in the logo row and Escape all close it again. The transform
+     is the only thing that moves, so opening never reflows what is behind it.
+     ========================================================================== */
+  .nav-toggle{
+    display:none;
+    width:36px;height:36px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:#fff;
+    color:#1f2937;
+    font-size:16px;
+    line-height:1;
+    cursor:pointer;
+    flex-shrink:0;
+    align-items:center;
+    justify-content:center;
+  }
+  .nav-toggle:hover{border-color:#2f8fd6;color:#2f8fd6;}
+
+  .nav-close{
+    display:none;
+    width:28px;height:28px;
+    border:none;
+    border-radius:50%;
+    background:transparent;
+    color:#9aa4ad;
+    font-size:20px;
+    line-height:1;
+    cursor:pointer;
+    flex-shrink:0;
+    align-items:center;
+    justify-content:center;
+  }
+  .nav-close:hover{background:#f0f2f4;color:#1f2937;}
+
+  .nav-scrim{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:40;
+    background:rgba(15,23,42,0.45);
+  }
+
+  @media (max-width:900px){
+    .nav-toggle{display:flex;}
+
+    .sidebar{
+      position:fixed;
+      top:0;left:0;bottom:0;
+      z-index:50;
+      width:250px;
+      height:100vh;
+      transform:translateX(-100%);
+      transition:transform 0.28s ease;
+      box-shadow:0 0 40px rgba(15,23,42,0.18);
+    }
+    .nav-close{display:flex;}
+
+    .app.nav-open .sidebar{transform:translateX(0);}
+    .app.nav-open .nav-scrim{display:block;}
+
+    /* the logo row is space-between with two children, so the close button
+       takes the settings icon's place rather than landing between them */
+    .settings-icon{display:none;}
+
+    /* the topbar keeps the hamburger on the left and pushes the rest right */
+    .topbar{justify-content:flex-start;padding:0 16px;gap:12px;}
+    .topbar .theme-toggle{margin-left:auto;}
+  }
+
+  /* at phone widths the name and role no longer fit beside the select, and the
+     avatar alone already carries the identity plus its status dot */
+  @media (max-width:560px){
+    .user-name-role{display:none;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .sidebar{transition:none;}
+  }
+
+  /* ==========================================================================
      DARK MODE
      Toggled by the site header switch (or the moon icon in this topbar), which
      sets data-theme on <html>. Scoped with the attribute selector so the light
@@ -651,6 +736,10 @@
   [data-theme="dark"] .nav-item .chevron{color:#8a949e;}
   [data-theme="dark"] .nav-item:not(.active):hover{background:#222a31;}
   [data-theme="dark"] .nav::-webkit-scrollbar-thumb{background:#39424b;}
+  [data-theme="dark"] .nav-toggle{background:#1b2126;border-color:#2b333a;color:#e8edf1;}
+  [data-theme="dark"] .nav-toggle:hover{border-color:#59a8e6;color:#59a8e6;}
+  [data-theme="dark"] .nav-close{color:#97a2ac;}
+  [data-theme="dark"] .nav-close:hover{background:#222a31;color:#e8edf1;}
   [data-theme="dark"] .theme-toggle{color:#a9b4be;cursor:pointer;}
   [data-theme="dark"] .topbar{background:#1b2126;}
   [data-theme="dark"] .top-select .caret{border-left-color:#2a4b64;}
@@ -689,12 +778,13 @@
 <div class="app">
 
   <!-- SIDEBAR -->
-  <div class="sidebar">
+  <div class="sidebar" id="dashSidebar">
     <div class="logo-row">
       <div class="logo">
         <div class="logo-text"><span style="color:var(--text-dark);">tech</span><span class="o-icon">◎</span><span style="color:var(--text-dark);">first</span></div>
         <div class="logo-sub">SOLAR CRM</div>
       </div>
+      <button type="button" class="nav-close" id="navClose" aria-label="Close menu">&times;</button>
       <div class="settings-icon">⚙</div>
     </div>
     <div class="nav">
@@ -715,9 +805,12 @@
     </div>
   </div>
 
+  <div class="nav-scrim" id="navScrim"></div>
+
   <!-- MAIN -->
   <div class="main">
     <div class="topbar">
+      <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="dashSidebar">☰</button>
       <div class="theme-toggle"><span class="theme-toggle__icon" id="themeIcon">☀️</span><div class="theme-hint" id="themeHint" role="status">Switch to light mode</div></div>
       <div class="crm-select">CRM <span class="caret">▾</span></div>
       <div class="user-block">
@@ -941,6 +1034,43 @@
   toggleBtn();
   btn.addEventListener('click', () => {
     mainScroll.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  // MOBILE SIDEBAR - the hamburger opens it, and the scrim, the x and Escape all
+  // close it. Only the sidebar's transform moves, so the tables behind it never
+  // reflow, and the open state is dropped if the viewport grows back to desktop
+  // where the sidebar is a permanent column again.
+  const app = document.querySelector('.app');
+  const navToggle = document.getElementById('navToggle');
+  const navClose = document.getElementById('navClose');
+  const navScrim = document.getElementById('navScrim');
+
+  function setNav(open) {
+    app.classList.toggle('nav-open', open);
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
+
+  navToggle.addEventListener('click', () => setNav(!app.classList.contains('nav-open')));
+  navClose.addEventListener('click', () => setNav(false));
+  navScrim.addEventListener('click', () => setNav(false));
+
+  // picking a destination dismisses the overlay, since the item is underneath it
+  document.querySelectorAll('.nav-item').forEach(function (item) {
+    item.addEventListener('click', () => setNav(false));
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && app.classList.contains('nav-open')) {
+      setNav(false);
+      navToggle.focus();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900) {
+      setNav(false);
+    }
   });
 
   // THEME - the moon icon in this topbar is the only control. The choice is

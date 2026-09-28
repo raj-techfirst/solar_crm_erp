@@ -21,6 +21,36 @@
 	});
 	
 
+	///////////////////////////////////////////////////
+	// 04. Hero dashboard reveal
+	// The CRM and ERP heroes both sit under a frosted layer with an "Explore
+	// Dashboard" button. One click fades the layer so the live mockup behind it
+	// is sharp and fully readable. Only the layer animates - the mockup is never
+	// re-rendered or re-requested. visibility:hidden on the faded layer also
+	// takes the button out of the tab order, so a revealed dashboard is not left
+	// with a dead control sitting in the keyboard flow.
+	//
+	// Bound on DOM ready rather than window load, which on these two pages waits
+	// on the dashboard iframe plus every image, so the control would be dead for
+	// a moment after it had already appeared.
+	$(function () {
+		document.querySelectorAll('[data-dashboard-reveal]').forEach(function (revealButton) {
+			var revealFrame = revealButton.closest('.tp-hero-3-main-thumb');
+			var revealLayer = revealFrame && revealFrame.querySelector('.tp-dashboard-lock');
+
+			if (!revealFrame || !revealLayer) {
+				return;
+			}
+
+			revealButton.addEventListener('click', function () {
+				revealFrame.classList.add('is-revealed');
+				revealLayer.setAttribute('aria-hidden', 'true');
+			});
+		});
+	});
+	
+	
+
 	var windowOn = $(window)
 	///////////////////////////////////////////////////
 	// 01. PreLoader Js

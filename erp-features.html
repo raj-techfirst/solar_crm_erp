@@ -4,8 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>TechFirst Solar ERP | Solar Business Operations Management</title>
-    <meta name="description" content="TechFirst Solar ERP manages warehouse, procurement, goods, and operations for solar businesses with a complete operations platform.">
+<title>TechFirst Solar ERP | Inventory, Stock &amp; Serial Management</title>
+<meta name="description" content="TechFirst Solar ERP runs the material side of solar: items and BOM, purchase orders, goods receipt, warehouse and project-wise stock, delivery challan dispatch, installation consumption, returns, adjustments and reports.">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
@@ -116,18 +117,30 @@
                     <div class="tp-hero-3-wrapper tp-hero-3-full-width p-relative">
                         <div class="tp-hero-3-main-thumb z-index-5">
                             <iframe src="assets/erp-dashboard.html" title="TechFirst Solar ERP dashboard showing purchase orders, warehouse stock, monthly activity and low stock alerts" loading="eager"></iframe>
+                            <div class="tp-dashboard-lock">
+                                <div class="tp-dashboard-lock__inner">
+                                    <p class="tp-dashboard-lock__eyebrow">Live product preview</p>
+                                    <p class="tp-dashboard-lock__title">Explore the ERP dashboard</p>
+                                    <p class="tp-dashboard-lock__text">Purchase orders, warehouse and project-wise stock, monthly activity and low stock alerts &mdash; the screen the back office opens every morning.</p>
+                                    <button type="button" class="tp-dashboard-lock__btn" data-dashboard-reveal>
+                                        <span>Explore Dashboard</span>
+                                        <i class="fal fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="container erp-hero__copy">
                         <p class="erp-eyebrow wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".1s">TechFirst Solar ERP</p>
-                        <h1 class="erp-hero__title hero-text-anim">
+                        <h1 class="erp-hero__title">
                             Run the back office from<br>
                             <span>one stock ledger</span>
                         </h1>
                         <p class="erp-lead wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
-                            Purchase orders, goods receipt, warehouse and project-wise stock, delivery
-                            challans, installation consumption and reports &mdash; all recorded against the
-                            same project the CRM started, so nothing is retyped between sales and site.
+                            Items and bill of materials, purchase orders, goods receipt, warehouse and
+                            project-wise stock, delivery challans, installation consumption, returns and
+                            adjustments &mdash; every movement written to a credit and debit ledger, and handed
+                            to the CRM at the dispatch milestone.
                         </p>
                         <div class="erp-hero__actions wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s">
                             <a class="erp-btn erp-btn--primary" href="contact.html">
@@ -139,75 +152,100 @@
                             </a>
                         </div>
                         <ul class="erp-hero__points wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".7s">
+                            <li><i class="fal fa-check"></i> Credit &amp; debit ledger</li>
                             <li><i class="fal fa-check"></i> Serial-level tracking</li>
-                            <li><i class="fal fa-check"></i> Project-wise consumption</li>
-                            <li><i class="fal fa-check"></i> Exportable reports</li>
+                            <li><i class="fal fa-check"></i> BOM-driven requirements</li>
                         </ul>
                     </div>
                 </div>
 
                 <!-- Operational spine -->
-                <div class="erp-section erp-flow">
+                <div class="erp-section erp-flow" id="erp-flow">
                     <div class="container">
                         <div class="erp-section-head">
-                            <p class="erp-eyebrow wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".1s">The operational spine</p>
+                            <p class="erp-eyebrow wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".1s">The material flow</p>
                             <h2 class="erp-heading wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".2s">
-                                Every module hangs off <span>one project record</span>
+                                Twelve stages from <span>item master to report</span>
                             </h2>
                             <p class="erp-lead wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
                                 Material only tells the truth when it can be traced back to the job that
-                                needed it. The ERP follows the same thread the CRM opened &mdash; enquiry to
-                                AMC &mdash; so a serial, a challan and an invoice all point at the same installation.
+                                needed it. This is the whole path a panel takes &mdash; defined, bought, received,
+                                dispatched, installed, returned or corrected &mdash; and the dispatch stage is
+                                the exact point where the CRM sales order picks it up.
                             </p>
                         </div>
                         <ol class="erp-flow__track">
                             <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".1s">
                                 <span class="erp-step__num">1</span>
-                                <h3 class="erp-step__title">Enquiry</h3>
-                                <p class="erp-step__text">A lead becomes a project with a site, a customer and a capacity to quote against.</p>
-                                <span class="erp-step__tag">From CRM</span>
+                                <h3 class="erp-step__title">Master Data</h3>
+                                <p class="erp-step__text">Loose items, panel and inverter groups, suppliers, warehouses and the financial year every entry is booked against.</p>
+                                <span class="erp-step__tag">Foundation</span>
                             </li>
                             <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".2s">
                                 <span class="erp-step__num">2</span>
-                                <h3 class="erp-step__title">Site Survey</h3>
-                                <p class="erp-step__text">Survey findings and the approved design fix the BoM, so procurement starts from facts.</p>
-                                <span class="erp-step__tag">Design locked</span>
+                                <h3 class="erp-step__title">Bill of Materials</h3>
+                                <p class="erp-step__text">A named list of what one project needs, reusable across orders and clonable when the design changes.</p>
+                                <span class="erp-step__tag">Per project</span>
                             </li>
                             <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
                                 <span class="erp-step__num">3</span>
-                                <h3 class="erp-step__title">Quotation</h3>
-                                <p class="erp-step__text">Price built from live item rates and margins, not from a spreadsheet someone edited last year.</p>
-                                <span class="erp-step__tag">Rate master</span>
+                                <h3 class="erp-step__title">Purchase Order</h3>
+                                <p class="erp-step__text">Raise a supplier PO at agreed rates and follow it from pending through approval to fully received.</p>
+                                <span class="erp-step__tag">Procurement</span>
                             </li>
                             <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".4s">
                                 <span class="erp-step__num">4</span>
-                                <h3 class="erp-step__title">Purchase Order</h3>
-                                <p class="erp-step__text">Raise the PO against the project or the supplier, and see what is still pending.</p>
-                                <span class="erp-step__tag">Procurement</span>
+                                <h3 class="erp-step__title">PO Receiving</h3>
+                                <p class="erp-step__text">Book receipts against PO lines in one lot or several, with the balance still outstanding on every line.</p>
+                                <span class="erp-step__tag">GRN record</span>
                             </li>
                             <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s">
                                 <span class="erp-step__num">5</span>
-                                <h3 class="erp-step__title">Good Receipt</h3>
-                                <p class="erp-step__text">Book material in against the PO, or raise a direct GRN when there is no PO at all.</p>
+                                <h3 class="erp-step__title">Goods Receipt</h3>
+                                <p class="erp-step__text">The screen that credits the warehouse, with serials and warranty dates captured as material lands.</p>
                                 <span class="erp-step__tag">Stock inward</span>
                             </li>
                             <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".6s">
                                 <span class="erp-step__num">6</span>
                                 <h3 class="erp-step__title">Warehouse Stock</h3>
-                                <p class="erp-step__text">Opening, inward, outward and closing quantities settle themselves per item.</p>
+                                <p class="erp-step__text">A running balance for every item in every warehouse, backed by an append-only credit and debit history.</p>
                                 <span class="erp-step__tag">Central ledger</span>
                             </li>
                             <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".7s">
                                 <span class="erp-step__num">7</span>
                                 <h3 class="erp-step__title">Delivery Challan</h3>
-                                <p class="erp-step__text">Material leaves for site with serials listed, and returns come back on a return challan.</p>
+                                <p class="erp-step__text">Issue material to a project, an installer, another warehouse or a trading order, in one stock movement.</p>
                                 <span class="erp-step__tag">Dispatch</span>
                             </li>
                             <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".8s">
                                 <span class="erp-step__num">8</span>
-                                <h3 class="erp-step__title">Installation &amp; AMC</h3>
-                                <p class="erp-step__text">Site consumption is confirmed, the project closes, and service history carries forward.</p>
-                                <span class="erp-step__tag">Handover</span>
+                                <h3 class="erp-step__title">Project &amp; Installer Stock</h3>
+                                <p class="erp-step__text">Dispatched material lands on its own balance, held apart from central stock for that site or that crew.</p>
+                                <span class="erp-step__tag">Allocated</span>
+                            </li>
+                            <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".9s">
+                                <span class="erp-step__num">9</span>
+                                <h3 class="erp-step__title">Installation Consumption</h3>
+                                <p class="erp-step__text">The crew records what was really installed, panel by serial, and the allocated stock is consumed against it.</p>
+                                <span class="erp-step__tag">On site</span>
+                            </li>
+                            <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay="1s">
+                                <span class="erp-step__num">10</span>
+                                <h3 class="erp-step__title">Delivery Challan Return</h3>
+                                <p class="erp-step__text">Unused material goes back on a return challan and re-enters the warehouse balance it left.</p>
+                                <span class="erp-step__tag">Reverse flow</span>
+                            </li>
+                            <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay="1.1s">
+                                <span class="erp-step__num">11</span>
+                                <h3 class="erp-step__title">Stock Adjustments</h3>
+                                <p class="erp-step__text">A physical count sets the balance, and the difference is written to the ledger with an audit record.</p>
+                                <span class="erp-step__tag">Count check</span>
+                            </li>
+                            <li class="erp-step wow tpfadeUp" data-wow-duration=".9s" data-wow-delay="1.2s">
+                                <span class="erp-step__num">12</span>
+                                <h3 class="erp-step__title">Reports</h3>
+                                <p class="erp-step__text">Stock value, requirement shortfall, project-wise usage, serial history and trading, exportable.</p>
+                                <span class="erp-step__tag">Visibility</span>
                             </li>
                         </ol>
                     </div>
@@ -219,83 +257,120 @@
                         <div class="erp-section-head">
                             <p class="erp-eyebrow wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".1s">The modules</p>
                             <h2 class="erp-heading wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".2s">
-                                Six modules that cover <span>store to site</span>
+                                Nine modules that cover <span>store to site</span>
                             </h2>
                             <p class="erp-lead wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
                                 Each one is usable on its own and better together. They share the same item
-                                master, so a receipt, a challan and a report are always talking about the same thing.
+                                master and the same ledger, so a receipt, a challan and a report are always
+                                talking about the same thing.
                             </p>
                         </div>
-                        <div class="row g-4">
-                            <div class="col-lg-4 col-md-6">
+                        <div class="row row-cols-1 row-cols-lg-3 g-4">
+                            <div class="col">
                                 <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".1s" style="--erp-accent: #008cd2; --erp-accent-soft: rgba(0, 140, 210, 0.1);">
-                                    <span class="erp-card__icon"><i class="fas fa-warehouse"></i></span>
-                                    <h3 class="erp-card__title">Warehouse Stock</h3>
-                                    <p class="erp-card__text">The central ledger for every item you trade. Book inward from a receipt, outward against a challan, and let opening and closing balance themselves.</p>
+                                    <span class="erp-card__icon"><i class="fas fa-box-open"></i></span>
+                                    <h3 class="erp-card__title">Items &amp; Item Groups</h3>
+                                    <p class="erp-card__text">Loose items like cables, structures and earthing sit alongside panel and inverter groups, each with its own code, HSN, GST rate, unit and minimum order quantity.</p>
                                     <ul class="erp-card__list">
-                                        <li><i class="fal fa-check"></i> Item-wise ledgers</li>
-                                        <li><i class="fal fa-check"></i> Opening &amp; closing auto-computed</li>
-                                        <li><i class="fal fa-check"></i> Low-stock flags</li>
+                                        <li><i class="fal fa-check"></i> Item code &amp; HSN per item</li>
+                                        <li><i class="fal fa-check"></i> Panels &amp; inverters, DCR and non-DCR</li>
+                                        <li><i class="fal fa-check"></i> MOQ and unit of measure</li>
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".2s" style="--erp-accent: #FF7A41; --erp-accent-soft: rgba(255, 122, 65, 0.12);">
+                            <div class="col">
+                                <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".2s" style="--erp-accent: #5FC33B; --erp-accent-soft: rgba(95, 195, 59, 0.14);">
+                                    <span class="erp-card__icon"><i class="fas fa-layer-group"></i></span>
+                                    <h3 class="erp-card__title">Bill of Materials</h3>
+                                    <p class="erp-card__text">Define the material list one project needs, then reuse it across sales orders. Cloning gives you a design variant without retyping the lines.</p>
+                                    <ul class="erp-card__list">
+                                        <li><i class="fal fa-check"></i> Named and reusable</li>
+                                        <li><i class="fal fa-check"></i> Clone for a new variant</li>
+                                        <li><i class="fal fa-check"></i> Requirement per sales order</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s" style="--erp-accent: #FF7A41; --erp-accent-soft: rgba(255, 122, 65, 0.12);">
                                     <span class="erp-card__icon"><i class="fas fa-file-invoice"></i></span>
                                     <h3 class="erp-card__title">Purchase Order</h3>
-                                    <p class="erp-card__text">Raise a PO against a project or a supplier with agreed rates and terms, then track exactly how much is still outstanding.</p>
+                                    <p class="erp-card__text">Raise a supplier PO at agreed rates and terms, then track exactly how much of each line is still outstanding.</p>
                                     <ul class="erp-card__list">
-                                        <li><i class="fal fa-check"></i> Supplier-wise POs</li>
-                                        <li><i class="fal fa-check"></i> Pending quantity tracking</li>
-                                        <li><i class="fal fa-check"></i> Rate &amp; terms on record</li>
+                                        <li><i class="fal fa-check"></i> Pending, approved, part-received, received</li>
+                                        <li><i class="fal fa-check"></i> Remaining quantity per line</li>
+                                        <li><i class="fal fa-check"></i> PO and GRN in PDF</li>
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s" style="--erp-accent: #5FC33B; --erp-accent-soft: rgba(95, 195, 59, 0.14);">
-                                    <span class="erp-card__icon"><i class="fas fa-box-open"></i></span>
-                                    <h3 class="erp-card__title">Good Receipt</h3>
-                                    <p class="erp-card__text">Book material in against a purchase order, or raise a direct GRN when a supplier delivers without one. Serials are captured at the point of entry.</p>
-                                    <ul class="erp-card__list">
-                                        <li><i class="fal fa-check"></i> PO-linked GRN</li>
-                                        <li><i class="fal fa-check"></i> Direct GRN without PO</li>
-                                        <li><i class="fal fa-check"></i> Serial capture at receipt</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
+                            <div class="col">
                                 <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".4s" style="--erp-accent: #5138EE; --erp-accent-soft: rgba(81, 56, 238, 0.1);">
-                                    <span class="erp-card__icon"><i class="fas fa-truck-fast"></i></span>
-                                    <h3 class="erp-card__title">Delivery Challan</h3>
-                                    <p class="erp-card__text">Send material to site with the serials listed on the challan. Record what the installer actually consumed and close the loop on anything returned.</p>
+                                    <span class="erp-card__icon"><i class="fas fa-clipboard-check"></i></span>
+                                    <h3 class="erp-card__title">Goods Receipt</h3>
+                                    <p class="erp-card__text">The screen that credits the warehouse, whether the supplier invoice arrived against a PO or on its own. Serials are captured as it lands.</p>
                                     <ul class="erp-card__list">
-                                        <li><i class="fal fa-check"></i> Project-wise dispatch</li>
-                                        <li><i class="fal fa-check"></i> Return challan</li>
-                                        <li><i class="fal fa-check"></i> Site confirmation</li>
+                                        <li><i class="fal fa-check"></i> One invoice number per supplier</li>
+                                        <li><i class="fal fa-check"></i> Serial import at receipt</li>
+                                        <li><i class="fal fa-check"></i> Edit or delete reverses the stock</li>
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s" style="--erp-accent: #FF3C82; --erp-accent-soft: rgba(255, 60, 130, 0.1);">
-                                    <span class="erp-card__icon"><i class="fas fa-sitemap"></i></span>
-                                    <h3 class="erp-card__title">Projectwise Stock</h3>
-                                    <p class="erp-card__text">Stock reserved, issued and consumed for each installation, kept separate from the main warehouse so a busy project cannot hide a shortage.</p>
+                            <div class="col">
+                                <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s" style="--erp-accent: #008cd2; --erp-accent-soft: rgba(0, 140, 210, 0.1);">
+                                    <span class="erp-card__icon"><i class="fas fa-warehouse"></i></span>
+                                    <h3 class="erp-card__title">Warehouse Stock</h3>
+                                    <p class="erp-card__text">A running balance for every item in every warehouse, with an append-only credit and debit history behind it. Nothing is quietly recalculated.</p>
                                     <ul class="erp-card__list">
-                                        <li><i class="fal fa-check"></i> Reserved vs issued</li>
-                                        <li><i class="fal fa-check"></i> Per-project requirement view</li>
-                                        <li><i class="fal fa-check"></i> Shortfall alerts</li>
+                                        <li><i class="fal fa-check"></i> Credit and debit ledger</li>
+                                        <li><i class="fal fa-check"></i> Multiple warehouses</li>
+                                        <li><i class="fal fa-check"></i> Filter by item, group or category</li>
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-6">
+                            <div class="col">
                                 <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".6s" style="--erp-accent: #FFAB0A; --erp-accent-soft: rgba(255, 171, 10, 0.14);">
-                                    <span class="erp-card__icon"><i class="fas fa-chart-line"></i></span>
-                                    <h3 class="erp-card__title">Report &amp; Analysis</h3>
-                                    <p class="erp-card__text">Turn the ledger into the numbers you actually review in a Monday meeting, then export them for your accountant without rebuilding anything.</p>
+                                    <span class="erp-card__icon"><i class="fas fa-shipping-fast"></i></span>
+                                    <h3 class="erp-card__title">Delivery Challan</h3>
+                                    <p class="erp-card__text">Issue material to a project, an installer, another warehouse or a trading order. The source is debited and the destination credited in one movement.</p>
                                     <ul class="erp-card__list">
-                                        <li><i class="fal fa-check"></i> Stock history by item</li>
-                                        <li><i class="fal fa-check"></i> Purchase rate variance</li>
-                                        <li><i class="fal fa-check"></i> Export to Excel</li>
+                                        <li><i class="fal fa-check"></i> Four issue types</li>
+                                        <li><i class="fal fa-check"></i> Blocked if stock is short</li>
+                                        <li><i class="fal fa-check"></i> PDF with vehicle details</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".7s" style="--erp-accent: #FF3C82; --erp-accent-soft: rgba(255, 60, 130, 0.1);">
+                                    <span class="erp-card__icon"><i class="fas fa-sitemap"></i></span>
+                                    <h3 class="erp-card__title">Project &amp; Installer Stock</h3>
+                                    <p class="erp-card__text">What each installation and each installer is holding, kept apart from central stock so a busy project cannot hide a shortage elsewhere.</p>
+                                    <ul class="erp-card__list">
+                                        <li><i class="fal fa-check"></i> Per project and per installer</li>
+                                        <li><i class="fal fa-check"></i> Issued against consumed</li>
+                                        <li><i class="fal fa-check"></i> Manual warehouse transfer</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".8s" style="--erp-accent: #00A99D; --erp-accent-soft: rgba(0, 169, 157, 0.12);">
+                                    <span class="erp-card__icon"><i class="fas fa-sliders-h"></i></span>
+                                    <h3 class="erp-card__title">Returns &amp; Adjustments</h3>
+                                    <p class="erp-card__text">Send unused material back to the warehouse on a return challan, or correct a balance after a physical count with the difference recorded.</p>
+                                    <ul class="erp-card__list">
+                                        <li><i class="fal fa-check"></i> Return challan to warehouse</li>
+                                        <li><i class="fal fa-check"></i> Count-based correction</li>
+                                        <li><i class="fal fa-check"></i> Adjustment audit trail</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="erp-card h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".9s" style="--erp-accent: #5138EE; --erp-accent-soft: rgba(81, 56, 238, 0.1);">
+                                    <span class="erp-card__icon"><i class="fas fa-chart-line"></i></span>
+                                    <h3 class="erp-card__title">Reports &amp; Analysis</h3>
+                                    <p class="erp-card__text">Valuation, requirement shortfall, project-wise usage, serial history and trading analytics &mdash; on screen, or as PDF and Excel for your accountant.</p>
+                                    <ul class="erp-card__list">
+                                        <li><i class="fal fa-check"></i> Stock value with GST</li>
+                                        <li><i class="fal fa-check"></i> Requirement vs available</li>
+                                        <li><i class="fal fa-check"></i> Project and serial reports</li>
                                     </ul>
                                 </div>
                             </div>
@@ -304,47 +379,48 @@
                 </div>
 
                 <!-- Deep dives -->
-                <div class="erp-section erp-dive">
+                <div class="erp-section erp-dive" id="erp-ledger">
                     <div class="container">
                         <div class="row align-items-center erp-dive__row">
                             <div class="col-lg-6 erp-dive__copy">
-                                <h3>Every serial has <span>a history you can read</span></h3>
+                                <h3>Every serial moves through <span>a known set of states</span></h3>
                                 <p>
                                     A panel that arrived on the 4th, sat in the warehouse for nine days and was
-                                    installed on the 13th is a warranty question waiting to happen. Tracking
-                                    serials from inward through dispatch to site means a recall or a service
-                                    call is a lookup, not an investigation.
+                                    installed on the 13th is a warranty question waiting to happen. A serial is
+                                    booked in as available, moves to transfer when it changes warehouse and to
+                                    sold the moment it is dispatched or installed &mdash; and any correction sends
+                                    it back to available rather than leaving a gap in the trail.
                                 </p>
                                 <ul class="erp-dive__list">
-                                    <li><i class="fal fa-check-circle"></i> Serial numbers captured at goods receipt</li>
-                                    <li><i class="fal fa-check-circle"></i> Same serials printed on the delivery challan</li>
-                                    <li><i class="fal fa-check-circle"></i> Installation consumption confirmed on site</li>
-                                    <li><i class="fal fa-check-circle"></i> Warranty claims start from a real trail</li>
+                                    <li><i class="fal fa-check-circle"></i> Imported at goods receipt with warranty and guarantee dates</li>
+                                    <li><i class="fal fa-check-circle"></i> Warehouse-to-warehouse moves marked as transfer</li>
+                                    <li><i class="fal fa-check-circle"></i> Dispatch or installation marks the serial sold</li>
+                                    <li><i class="fal fa-check-circle"></i> Removing a line or a challan frees it again</li>
                                 </ul>
                             </div>
                             <div class="col-lg-6 erp-dive__art">
                                 <div class="erp-art">
-                                    <p class="erp-art__label">Serial trace &middot; INV-25-0418</p>
+                                    <p class="erp-art__label">Serial trace &middot; GRN/2503/00041</p>
                                     <div class="erp-art__serial">
                                         <i class="fas fa-barcode"></i>
                                         <span>SPV-MOD-450W &middot; SN 8841-2277</span>
                                     </div>
                                     <ul class="erp-trail">
                                         <li>
-                                            <strong>Goods receipt &mdash; 04 Mar</strong>
-                                            <span>Received against PO-0912 from supplier. Serial verified at inward.</span>
+                                            <strong>Purchase import &mdash; available</strong>
+                                            <span>Booked in against the supplier invoice. Warranty and guarantee dates recorded.</span>
                                         </li>
                                         <li>
-                                            <strong>Warehouse &mdash; 04 to 13 Mar</strong>
+                                            <strong>Warehouse hold &mdash; available</strong>
                                             <span>Held in central stock, allocated to project &ldquo;Riverside 5 kW&rdquo;.</span>
                                         </li>
                                         <li>
-                                            <strong>Delivery challan &mdash; 13 Mar</strong>
-                                            <span>Dispatched on DC-0341, acknowledged by the site engineer.</span>
+                                            <strong>Challan import &mdash; sold</strong>
+                                            <span>Linked to a challan line where the serial count matched the quantity exactly.</span>
                                         </li>
                                         <li>
-                                            <strong>Installed &mdash; 13 Mar</strong>
-                                            <span>Consumption confirmed against the project BoM. Warranty clock starts.</span>
+                                            <strong>Installed &mdash; sold</strong>
+                                            <span>Consumption confirmed against the project BOM. Warranty clock is running.</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -353,18 +429,19 @@
 
                         <div class="row align-items-center erp-dive__row erp-dive__row--flip">
                             <div class="col-lg-6 erp-dive__copy">
-                                <h3>Warehouse stock and project stock are <span>different questions</span></h3>
+                                <h3>Two balances, <span>a ledger behind each</span></h3>
                                 <p>
-                                    &ldquo;How much do we have?&rdquo; and &ldquo;How much does this installation
-                                    still need?&rdquo; fail you in opposite directions. A healthy warehouse can
-                                    still leave a project short, so the ERP answers both separately &mdash; and
-                                    flags the gap before the crew is standing in a bare terrace.
+                                    &ldquo;How much do we hold?&rdquo; and &ldquo;How much has this installation
+                                    taken?&rdquo; are different questions, and a healthy warehouse can still
+                                    leave a project short. So the ERP keeps two running balances &mdash; central
+                                    warehouse, and project or installer &mdash; and every single change appends a
+                                    credit or a debit row saying what moved, when, and why.
                                 </p>
                                 <ul class="erp-dive__list">
-                                    <li><i class="fal fa-check-circle"></i> Central ledger stays independent of any project</li>
-                                    <li><i class="fal fa-check-circle"></i> Requirement, issued and consumed tracked per project</li>
-                                    <li><i class="fal fa-check-circle"></i> Shortfall raised before dispatch is planned</li>
-                                    <li><i class="fal fa-check-circle"></i> Adjustments recorded, never silently overwritten</li>
+                                    <li><i class="fal fa-check-circle"></i> Warehouse balance for every item in every store</li>
+                                    <li><i class="fal fa-check-circle"></i> Project and installer balance for what is allocated</li>
+                                    <li><i class="fal fa-check-circle"></i> Each movement recorded as a credit or a debit</li>
+                                    <li><i class="fal fa-check-circle"></i> Nothing recomputed overnight &mdash; the history is the truth</li>
                                 </ul>
                             </div>
                             <div class="col-lg-6 erp-dive__art">
@@ -389,49 +466,121 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row align-items-center erp-dive__row erp-dive__row--flip">
+                            <div class="col-lg-6 erp-dive__copy">
+                                <h3>The rules the <span>stock engine enforces</span></h3>
+                                <p>
+                                    A ledger is only trustworthy if the arithmetic cannot drift. These are the
+                                    checks that run behind every screen &mdash; they are why a challan can never
+                                    quietly push a warehouse negative, and why a deleted challan leaves the same
+                                    trail a created one did.
+                                </p>
+                                <ul class="erp-dive__list">
+                                    <li><i class="fal fa-check-circle"></i> A challan is refused when the source warehouse is short</li>
+                                    <li><i class="fal fa-check-circle"></i> Editing a line reverses the old quantity, then applies the new one</li>
+                                    <li><i class="fal fa-check-circle"></i> Deleting a challan returns the stock and frees the serials</li>
+                                    <li><i class="fal fa-check-circle"></i> Serials are accepted only when the count matches the line quantity</li>
+                                    <li><i class="fal fa-check-circle"></i> A physical count becomes the new balance, with the difference recorded</li>
+                                    <li><i class="fal fa-check-circle"></i> A return takes quantity off the project and credits the warehouse</li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6 erp-dive__art">
+                                <div class="erp-art">
+                                    <p class="erp-art__label">One movement, two ledgers</p>
+                                    <div class="erp-split">
+                                        <div class="erp-split__panel" style="--erp-accent: #008cd2;">
+                                            <p>Warehouse ledger &middot; Module 450W</p>
+                                            <h4>Credit &amp; debit</h4>
+                                            <div class="erp-split__bar"><span>Goods receipt</span><b>+120</b><span class="erp-split__meter"><i style="width: 100%"></i></span></div>
+                                            <div class="erp-split__bar"><span>Challan out</span><b>&minus;24</b><span class="erp-split__meter"><i style="width: 20%"></i></span></div>
+                                            <div class="erp-split__bar"><span>Return in</span><b>+3</b><span class="erp-split__meter"><i style="width: 6%"></i></span></div>
+                                            <div class="erp-split__bar"><span>Balance</span><b>99</b><span class="erp-split__meter"><i style="width: 83%"></i></span></div>
+                                        </div>
+                                        <div class="erp-split__panel" style="--erp-accent: #FF3C82;">
+                                            <p>Project ledger &middot; Riverside 5 kW</p>
+                                            <h4>Credit &amp; debit</h4>
+                                            <div class="erp-split__bar"><span>Challan in</span><b>+24</b><span class="erp-split__meter"><i style="width: 100%"></i></span></div>
+                                            <div class="erp-split__bar"><span>Installed</span><b>&minus;19</b><span class="erp-split__meter"><i style="width: 79%"></i></span></div>
+                                            <div class="erp-split__bar"><span>Returned</span><b>&minus;5</b><span class="erp-split__meter"><i style="width: 21%"></i></span></div>
+                                            <div class="erp-split__bar"><span>Balance</span><b>0</b><span class="erp-split__meter"><i style="width: 4%"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Reports band -->
-                <div class="erp-section erp-reports">
+                <div class="erp-section erp-reports" id="erp-reports">
                     <div class="container">
                         <div class="erp-section-head">
                             <p class="erp-eyebrow wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".1s">Report &amp; analysis</p>
                             <h2 class="erp-heading wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".2s">
-                                The four reports that run <span>a solar business</span>
+                                The reports worth <span>having open</span>
                             </h2>
                             <p class="erp-lead wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
-                                Not a hundred exports to choose from. These are the ones worth
-                                having open, and every one of them is a live view of the same ledger.
+                                Not a hundred exports to choose from. These are the ones that answer a real
+                                question &mdash; what is it worth, what is short, what has been used where &mdash;
+                                and every one is a live read of the same ledger.
                             </p>
                         </div>
                         <div class="row g-4">
                             <div class="col-lg-3 col-md-6">
                                 <div class="erp-report h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".1s">
-                                    <i class="fas fa-layer-group"></i>
-                                    <h4>Stock History</h4>
-                                    <p>Every inward, outward and adjustment for an item, with the running balance, so a wrong quantity can be traced to a date.</p>
+                                    <i class="fas fa-warehouse"></i>
+                                    <h4>Stock Report</h4>
+                                    <p>Every item in stock valued at its most recent purchase rate, with GST added, filterable by warehouse, category or group.</p>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-6">
                                 <div class="erp-report h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".2s">
                                     <i class="fas fa-clipboard-list"></i>
                                     <h4>Required Stock</h4>
-                                    <p>What the approved BoM calls for, against what each project has actually received. The report that catches a short site.</p>
+                                    <p>What the bills of materials call for across live orders, less what the warehouse and the installers already hold. The report that catches a short site.</p>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-6">
                                 <div class="erp-report h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
-                                    <i class="fas fa-chart-pie"></i>
-                                    <h4>Purchase Analysis</h4>
-                                    <p>Spend by supplier, item and month, with rate variance against your own master, so margin leaks show up early.</p>
+                                    <i class="fas fa-sitemap"></i>
+                                    <h4>Project-wise Stock</h4>
+                                    <p>Live balance and installation consumption side by side for each project, so issued and installed can never quietly disagree.</p>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-6">
                                 <div class="erp-report h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".4s">
-                                    <i class="fas fa-file-export"></i>
-                                    <h4>Dispatch Summary</h4>
-                                    <p>Challans issued, material consumed and returns pending, grouped by project and ready to export for your accountant.</p>
+                                    <i class="fas fa-shipping-fast"></i>
+                                    <h4>Project-wise Dispatch</h4>
+                                    <p>What went out to which project, by consumer and agent, with the dispatch milestones broken out column by column.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="erp-report h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s">
+                                    <i class="fas fa-barcode"></i>
+                                    <h4>Serial Tracking</h4>
+                                    <p>Look up any serial and see where it came in, which challan it left on, and where it stands now.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="erp-report h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".6s">
+                                    <i class="fas fa-file-invoice"></i>
+                                    <h4>B2B &amp; Trading</h4>
+                                    <p>The trading suite &mdash; dispatch, acceptance and rate across B2B quotations, for the side of the business that sells without installing.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="erp-report h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".7s">
+                                    <i class="fas fa-user-shield"></i>
+                                    <h4>Sales Agent Wise</h4>
+                                    <p>Performance totals per agent, so commission and conversion are read from the same records the orders were built on.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="erp-report h-100 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".8s">
+                                    <i class="fas fa-chart-pie"></i>
+                                    <h4>Dashboard</h4>
+                                    <p>Aggregate counters across sales, dispatches and stock to open the day, drawn from the same counters the reports drill into.</p>
                                 </div>
                             </div>
                         </div>
@@ -443,9 +592,9 @@
                     <div class="container">
                         <h2>See your own projects move through the ERP</h2>
                         <p>
-                            Bring one live installation &mdash; an open quotation, a pending
-                            purchase order, a site waiting on modules &mdash; and we will walk it
-                            through the modules in a single sitting.
+                            Bring one live installation &mdash; a bill of materials, a pending purchase
+                            order, a site waiting on modules &mdash; and we will walk it through the ledger in a
+                            single sitting.
                         </p>
                         <div class="erp-cta__actions">
                             <a class="erp-btn erp-btn--primary" href="contact.html">
@@ -526,7 +675,7 @@
                         <div class="tp-footer__area tp-footer__tp-border-bottom">
                             <div class="container">
                                 <div class="row">
-                                    <div class="col-xl-3 col-lg-3 col-md-6 pb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
+                                    <div class="col-xl-3 col-lg-6 col-md-6 pb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
                                         <div class="tp-footer__widget footer-widget-3 footer-col-3-1">
                                             <div class="tp-footer__logo mb-25">
                                                 <a href="index.html">
@@ -560,37 +709,35 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-6 pb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s">
+                                    <div class="col-xl-4 col-lg-6 col-md-6 pb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".5s">
                                         <div class="tp-footer__widget footer-widget-3 footer-col-3-2">
                                             <h2 class="tp-footer__widget-title">CRM Features</h2>
                                             <div class="tp-footer__content">
                                                 <ul>
-                                                    <li><a href="crm-features.html">User Management</a></li>
-                                                    <li><a href="crm-features.html">Lead Management</a></li>
-                                                    <li><a href="crm-features.html">Quotation Management</a></li>
-                                                    <li><a href="crm-features.html">Sales Order Management</a></li>
-                                                    <li><a href="crm-features.html">Payment Management</a></li>
-                                                    <li><a href="mobile-app.html">Reports &amp; Analysis</a></li>
+                                                    <li><a href="crm-features.html#pipeline">Enquiry to Completion Pipeline</a></li>
+                                                    <li><a href="crm-features.html#status-engines">Status Engines &amp; Business Rules</a></li>
+                                                    <li><a href="crm-features.html#users-access">Users, Roles &amp; Access</a></li>
+                                                    <li><a href="crm-features.html">Full CRM Tour</a></li>
+                                                    <li><a href="mobile-app.html">Mobile App</a></li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-2 col-lg-2 col-md-6 pb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".7s">
+                                    <div class="col-xl-2 col-lg-6 col-md-6 pb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".7s">
                                         <div class="tp-footer__widget footer-widget-3 footer-col-3-3">
                                             <h2 class="tp-footer__widget-title">ERP Features</h2>
                                             <div class="tp-footer__content">
                                                 <ul>
-                                                    <li><a href="erp-features.html">Warehouse Stock</a></li>
-                                                    <li><a href="erp-features.html">Purchase Order</a></li>
-                                                    <li><a href="erp-features.html">Good Receipt</a></li>
-                                                    <li><a href="erp-features.html">Delivery Challan</a></li>
-                                                    <li><a href="erp-features.html">Projectwise Stock</a></li>
-                                                    <li><a href="mobile-app.html">Report &amp; Analysis</a></li>
+                                                    <li><a href="erp-features.html#erp-flow">Item Master to Report</a></li>
+                                                    <li><a href="erp-features.html#erp-modules">The Nine Modules</a></li>
+                                                    <li><a href="erp-features.html#erp-ledger">Serial &amp; Stock Tracking</a></li>
+                                                    <li><a href="erp-features.html#erp-reports">Reports &amp; Analysis</a></li>
+                                                    <li><a href="erp-features.html">Full ERP Tour</a></li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-4 col-lg-4 col-md-6 pb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".9s">
+                                    <div class="col-xl-3 col-lg-6 col-md-6 pb-30 wow tpfadeUp" data-wow-duration=".9s" data-wow-delay=".9s">
                                         <div class="tp-footer__widget footer-widget-3 footer-col-3-4">
                                             <h2 class="tp-footer__widget-title">Get In Touch</h2>
                                             <div class="tp-footer__input mb-35 p-relative">
@@ -626,7 +773,7 @@
                                 <div class="row justify-content-center">
                                     <div class="col-xl-6 col-lg-6 col-md-6">
                                         <div class="tp-copyright__text tp-copyright__text-3 text-center">
-                                            <span>Copyright &copy; 2025 <a href="https://www.techfirsterp.com" target="_blank">TechFirst ERP</a>. All Rights Reserved.</span>
+                                            <span>Copyright &copy; 2026 <a href="https://www.techfirsterp.com" target="_blank">TechFirst ERP</a>. All Rights Reserved.</span>
                                         </div>
                                     </div>
                                 </div>
