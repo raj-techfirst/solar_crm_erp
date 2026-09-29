@@ -7,7 +7,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Tech First Solar CRM</title>
 <style>
+  /* ---------- font system ----------
+     This dashboard is embedded in an iframe, so it cannot inherit the marketing
+     stylesheet and needs its own copy of the same import and variables. Keep the
+     family, the weights and the fallback stack identical to assets/css/style.css. */
+  @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap");
+
   :root{
+    /* ---------- font system ---------- */
+    --font-primary: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+    --fw-body: 400;
+    --fw-label: 500;
+    --fw-button: 600;
+    --fw-heading: 700;
+
+    /* ---------- type scale (1rem = 16px) ---------- */
+    --fs-xs: 0.75rem;
+    --fs-sm: 0.875rem;
+    --fs-base: 1rem;
+    --fs-md: 1.125rem;
+    --fs-lg: 1.25rem;
+    --fs-xl: 1.5rem;
+    --fs-2xl: 1.75rem;
+    --fs-3xl: 2rem;
+    --fs-4xl: 2.25rem;
+    --fs-5xl: 2.5rem;
+    --fs-6xl: 3rem;
+    --fs-7xl: 3.5rem;
+  
     --sidebar-bg:#ffffff;
     --sidebar-active:#1f7a8c;
     --sidebar-text:#5b6570;
@@ -28,10 +58,15 @@
     --total-pill-fg:#2fa84f;
   }
   *{box-sizing:border-box;}
-  html,body{height:100%;}
-  body{
+html,body{height:100%;}
+html{
+  font-family:var(--font-primary);
+  -webkit-text-size-adjust:100%;
+}
+body{
     margin:0;
-    font-family:"Segoe UI", Roboto, Arial, sans-serif;
+    font-family:var(--font-primary);
+    font-weight:var(--fw-body);
     /* this page is embedded in the CRM hero iframe, so it fills the frame
        edge to edge instead of centring a fixed 1351x600 card in grey */
     background:var(--page-bg);
@@ -72,7 +107,7 @@
     line-height:1;
   }
   .logo-text{
-    font-size:20px;
+    font-size:var(--fs-lg);
     font-weight:700;
     color:#1f2937;
     display:flex;
@@ -81,10 +116,10 @@
   }
   .logo-text .o-icon{
     color:#2f8fd6;
-    font-size:18px;
+    font-size:var(--fs-md);
   }
   .logo-sub{
-    font-size:9px;
+    font-size:var(--fs-xs);
     letter-spacing:1.5px;
     color:#9aa4ad;
     margin-top:2px;
@@ -94,7 +129,7 @@
     width:28px;height:28px;border-radius:50%;
     border:1px solid var(--border);
     display:flex;align-items:center;justify-content:center;
-    color:#9aa4ad;font-size:14px;
+    color:#9aa4ad;font-size:var(--fs-sm);
     flex-shrink:0;
   }
 
@@ -111,7 +146,7 @@
     align-items:center;
     gap:12px;
     padding:11px 20px;
-    font-size:14px;
+    font-size:var(--fs-sm);
     color:var(--sidebar-text);
     cursor:pointer;
     position:relative;
@@ -120,12 +155,12 @@
   .nav-item .icon{
     width:18px;
     text-align:center;
-    font-size:15px;
+    font-size:var(--fs-base);
     flex-shrink:0;
   }
   .nav-item .chevron{
     margin-left:auto;
-    font-size:11px;
+    font-size:var(--fs-xs);
     color:#c2c9ce;
   }
   .nav-item.active{
@@ -167,7 +202,7 @@
     border-radius:50%;
     display:flex;align-items:center;justify-content:center;
     color:#5b6570;
-    font-size:16px;
+    font-size:var(--fs-base);
     position:relative;
   }
 
@@ -183,7 +218,7 @@
     border-radius:6px;
     background:#1f2937;
     color:#fff;
-    font-size:12px;
+    font-size:var(--fs-xs);
     font-weight:600;
     line-height:1.3;
     white-space:nowrap;
@@ -252,13 +287,13 @@
     color:#2f8fd6;
     border-radius:6px;
     padding:7px 12px;
-    font-size:13px;
+    font-size:var(--fs-sm);
     font-weight:600;
   }
   .crm-select .caret{
     border-left:1px solid #cfe6fa;
     padding-left:8px;
-    font-size:10px;
+    font-size:var(--fs-xs);
   }
   .user-block{
     display:flex;
@@ -270,13 +305,13 @@
     line-height:1.25;
   }
   .user-name{
-    font-size:13px;
+    font-size:var(--fs-sm);
     font-weight:700;
     color:#2b2f33;
     letter-spacing:.3px;
   }
   .user-role{
-    font-size:11px;
+    font-size:var(--fs-xs);
     color:#9aa4ad;
   }
   .avatar{
@@ -286,7 +321,7 @@
     position:relative;
     display:flex;align-items:center;justify-content:center;
     color:#b7bec4;
-    font-size:20px;
+    font-size:var(--fs-lg);
   }
   .avatar::after{
     content:"";
@@ -325,7 +360,7 @@
     justify-content:space-between;
   }
   .stat-number{
-    font-size:30px;
+    font-size:var(--fs-3xl);
     font-weight:700;
     color:#2b2f33;
   }
@@ -333,7 +368,7 @@
     width:38px;height:38px;
     border-radius:50%;
     display:flex;align-items:center;justify-content:center;
-    font-size:17px;
+    font-size:var(--fs-md);
     flex-shrink:0;
   }
   .stat-icon.orange{background:var(--orange-icon-bg);color:var(--orange-icon);}
@@ -342,7 +377,7 @@
   .stat-icon.people{background:#e4e9fb;color:#6c7fe0;}
   .stat-icon.doc{background:#dcf3f6;color:#33b7c7;}
   .stat-label{
-    font-size:13px;
+    font-size:var(--fs-sm);
     color:#8b959e;
   }
 
@@ -363,23 +398,23 @@
     justify-content:space-between;
   }
   .kw-value{
-    font-size:22px;
+    font-size:var(--fs-xl);
     font-weight:700;
     color:#2b2f33;
   }
   .kw-value .unit{
-    font-size:11px;
+    font-size:var(--fs-xs);
     font-weight:700;
     color:#9aa4ad;
     margin-left:2px;
   }
   .kw-label{
-    font-size:13px;
+    font-size:var(--fs-sm);
     color:#8b959e;
     margin-top:6px;
   }
   .kw-emoji{
-    font-size:34px;
+    font-size:var(--fs-3xl);
     line-height:1;
     flex-shrink:0;
   }
@@ -397,7 +432,7 @@
     overflow:hidden;
   }
   .panel-title{
-    font-size:16px;
+    font-size:var(--fs-base);
     font-weight:700;
     color:#2b2f33;
     padding:18px 20px 14px 20px;
@@ -408,7 +443,7 @@
   }
   thead th{
     text-align:left;
-    font-size:11px;
+    font-size:var(--fs-xs);
     letter-spacing:.4px;
     color:#9aa4ad;
     font-weight:700;
@@ -423,7 +458,7 @@
   }
   tbody td{
     padding:10px 20px;
-    font-size:13.5px;
+    font-size:var(--fs-sm);
     color:#495057;
     border-bottom:1px solid #f1f3f5;
   }
@@ -454,7 +489,7 @@
     border-radius:11px;
     background:#e8f4fd;
     color:#2f8fd6;
-    font-size:12px;
+    font-size:var(--fs-xs);
     font-weight:600;
   }
   .scroll-body{
@@ -499,14 +534,14 @@
     margin-bottom:18px;
   }
   .chart-title{
-    font-size:16px;
+    font-size:var(--fs-base);
     font-weight:700;
     color:#2b2f33;
   }
   .conv-badge{
     background:#e3f8e9;
     color:#2fa84f;
-    font-size:12.5px;
+    font-size:var(--fs-xs);
     font-weight:700;
     padding:5px 12px;
     border-radius:6px;
@@ -522,14 +557,14 @@
     align-items:flex-end;
     padding-right:10px;
     height:300px;
-    font-size:12px;
+    font-size:var(--fs-xs);
     color:#8b959e;
   }
   .chart-yaxis-label{
     writing-mode:vertical-rl;
     transform:rotate(180deg);
     color:#8b959e;
-    font-size:12px;
+    font-size:var(--fs-xs);
     margin-right:8px;
     align-self:center;
   }
@@ -569,7 +604,7 @@
   .bar.orange{background:#f6a23c;}
   .bar-caption{
     margin-top:10px;
-    font-size:13px;
+    font-size:var(--fs-sm);
     color:#495057;
     white-space:nowrap;
   }
@@ -579,7 +614,7 @@
     align-items:center;
     justify-content:space-between;
     padding:18px 4px 4px 4px;
-    font-size:13px;
+    font-size:var(--fs-sm);
     color:#8b959e;
   }
   .footer a{
@@ -598,7 +633,7 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:18px;
+    font-size:var(--fs-md);
     border:none;
     cursor:pointer;
     box-shadow:0 4px 10px rgba(47,143,214,.35);
@@ -632,7 +667,7 @@
     border-radius:8px;
     background:#fff;
     color:#1f2937;
-    font-size:16px;
+    font-size:var(--fs-base);
     line-height:1;
     cursor:pointer;
     flex-shrink:0;
@@ -648,7 +683,7 @@
     border-radius:50%;
     background:transparent;
     color:#9aa4ad;
-    font-size:20px;
+    font-size:var(--fs-lg);
     line-height:1;
     cursor:pointer;
     flex-shrink:0;
@@ -889,7 +924,7 @@
         </div>
         <div class="kw-card">
           <div>
-            <div class="kw-value" style="font-size:28px;">7</div>
+            <div class="kw-value" style="font-size:var(--fs-2xl);">7</div>
             <div class="kw-label">Total Sales Orders</div>
           </div>
           <div class="kw-emoji">☀️</div>
